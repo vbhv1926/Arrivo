@@ -26,7 +26,7 @@ function Bridge() {
       free: counts.free,
       total: counts.total,
       booked: counts.booked,
-      reserved: counts.held + counts.mine,
+      reserved: counts.held, // other drivers on their way; yours count as booked
       rows,
     }
     window.lot = lot

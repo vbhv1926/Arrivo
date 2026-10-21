@@ -552,7 +552,7 @@ export function LotProvider({ children }) {
   const counts = useMemo(() => {
     const c = { free: 0, taken: 0, ending: 0, held: 0, mine: 0, total: SLOTS.length }
     for (const s of SLOTS) c[states[s.id].status] += 1
-    c.booked = c.taken + c.ending
+    c.booked = c.taken + c.ending + c.mine // your own bays are booked too
     return c
   }, [states])
 

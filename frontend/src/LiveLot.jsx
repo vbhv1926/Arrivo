@@ -605,8 +605,14 @@ const SORTS = [
   ['soonest', 'Frees soonest'],
 ]
 
-const match = (f, status) =>
-  f === 'all' || (f === 'booked' ? status === 'taken' || status === 'ending' : status === f)
+// "Booked" includes your own bays; "Yours" is every bay you hold a booking on, even one where
+// someone else is still parked and you're next.
+const match = (f, st) => {
+  if (f === 'all') return true
+  if (f === 'booked') return st.status === 'taken' || st.status === 'ending' || st.status === 'mine'
+  if (f === 'mine') return Boolean(st.mine)
+  return st.status === f
+}
 
 function bookingCell(st, tick) {
   const end = dayStart(tick) + DAY
@@ -654,17 +660,22 @@ const Row = memo(function Row({ s, st, list, tick, selected, onPick, i }) {
       return () => clearTimeout(t)
     }
   }, [st.status])
-  const canBook = st.status !== 'mine'
+  // any booking of yours on this bay: parked now, coming up, or next after someone else
+  const yours = Boolean(st.mine)
+  const canBook = !yours
   return (
     <div
       role="button"
       tabIndex={0}
-      className={`lr is-${st.status}${selected ? ' is-sel' : ''}${flash ? ' is-flash' : ''}`}
+      className={`lr is-${st.status}${yours ? ' is-yours' : ''}${selected ? ' is-sel' : ''}${flash ? ' is-flash' : ''}`}
       style={{ '--i': Math.min(i, 24) }}
       onClick={() => onPick(s.id)}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onPick(s.id))}
     >
-      <span className="lr-bay">{s.id}</span>
+      <span className="lr-bay">
+        {s.id}
+        {yours && <span className="lr-tag">Yours</span>}
+      </span>
       <span className="lr-type">
         <TypeGlyph type={s.type} size={13} />
         {type.label}
@@ -704,7 +715,7 @@ function SlotList() {
     const term = q.trim().toUpperCase().replace(/\s/g, '')
     let out = SLOTS.filter(
       (s) =>
-        match(filter, states[s.id].status) &&
+        match(filter, states[s.id]) &&
         (rowF === 'all' || s.row === rowF) &&
         (!term || s.id.replace('-', '').includes(term.replace('-', ''))),
     )
@@ -735,8 +746,9 @@ function SlotList() {
     return o
   }, [states])
 
+  const yoursCount = useMemo(() => SLOTS.filter((s) => states[s.id].mine).length, [states])
   const countFor = (f) =>
-    f === 'all' ? counts.total : f === 'booked' ? counts.booked : counts[f]
+    f === 'all' ? counts.total : f === 'booked' ? counts.booked : f === 'mine' ? yoursCount : counts[f]
 
   const pick = (id) => select(id, { scroll: true })
 
@@ -759,7 +771,7 @@ function SlotList() {
 
       <div className="list-ctrl">
         <div className="chips">
-          {FILTERS.filter(([f]) => f !== 'mine' || counts.mine > 0).map(([f, l]) => (
+          {FILTERS.filter(([f]) => f !== 'mine' || yoursCount > 0).map(([f, l]) => (
             <button key={f} className={`chip chip-s${filter === f ? ' is-on' : ''}`} onClick={() => setFilter(f)}>
               {f !== 'all' && <StatusDot status={f === 'booked' ? 'taken' : f} />}
               {l} <span className="count">{String(countFor(f)).padStart(2, '0')}</span>

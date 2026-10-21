@@ -1884,6 +1884,11 @@
 .lr:hover {
   background: var(--surface-2);
 }
+/* a bay you hold a booking on */
+.lr.is-yours {
+  background: var(--sun-wash);
+  box-shadow: inset 3px 0 0 var(--sun);
+}
 .lr.is-sel {
   background: var(--sun-wash);
   box-shadow: inset 3px 0 0 var(--sun-line);
@@ -1896,6 +1901,20 @@
   font-weight: 500;
   font-size: 20px;
   letter-spacing: -0.03em;
+}
+.lr-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--sun);
+  color: #17170f;
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: 4px;
 }
 .lr-type,
 .lr-status {
