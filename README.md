@@ -65,6 +65,8 @@ the backend then serves the built site on **http://localhost:8787** by itself.
 ## The pitch
 
 `presentation/Arrivo-INNOTECH26.pdf` is the deck to present from; the `.pptx` is the
-editable version. `brag-output/brag.mp4` is a short launch video of the site.
+editable version. `presentation/Arrivo-Why-and-Unique.pptx` is a shorter companion deck on
+why we built Arrivo and what makes it unique. `brag-output/brag.mp4` is a short launch video
+of the site.
 
 More detail on each part is in `frontend/README.md` and `backend/README.md`.
