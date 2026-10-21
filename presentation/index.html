@@ -359,26 +359,16 @@
           <div class="kicker" data-a="scramble"><span class="n">07</span><span class="bar"></span><span>The live plan</span></div>
           <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Tap it, tilt it, or pick up the lens.</h2>
         </div>
-        <p class="lede side" data-a="rise" data-d="0.5">Three ways to read the same live lot. Every view updates the moment anyone books.</p>
-        <div class="feats" data-scene="feats" data-a="stagger" data-d="0.4" data-s="0.12">
-          <div class="feat card">
-            <svg class="art" data-art="lens" viewBox="0 0 480 210"></svg>
-            <span class="n">01</span>
-            <h3>X-ray lens</h3>
-            <p>Hold it and drag. Bays light up as free, booked, ending or reserved over the real satellite photo. Let go to open one.</p>
-          </div>
-          <div class="feat card">
-            <svg class="art" data-art="tilt" viewBox="0 0 480 210"></svg>
-            <span class="n">02</span>
-            <h3>3D view</h3>
-            <p>Tilt the plan and the campus buildings rise out of it, so you know where you are. Plain CSS 3D, no 3D library.</p>
-          </div>
-          <div class="feat card">
-            <svg class="art" data-art="dark" viewBox="0 0 480 210"></svg>
-            <span class="n">03</span>
-            <h3>Dark mode</h3>
-            <p>One switch turns the whole site dark, plan included. It remembers your choice and follows your phone's setting.</p>
-          </div>
+        <div class="fan" data-scene="fan">
+          <figure class="shot s1" data-shot="assets/img/lens-light.jpg" data-crop="318,150,802,393">
+            <figcaption><span class="label"><i></i>X-ray lens · hold &amp; drag over the plan</span></figcaption>
+          </figure>
+          <figure class="shot s2" data-shot="assets/img/tilt-dark.jpg" data-crop="318,190,802,469">
+            <figcaption><span class="label"><i></i>3D view · buildings rise out of the plan</span></figcaption>
+          </figure>
+          <figure class="shot s3" data-shot="assets/img/lot-dark.jpg" data-crop="318,110,802,469">
+            <figcaption><span class="label"><i></i>Dark mode · same plan, at night</span></figcaption>
+          </figure>
         </div>
         <aside class="notes">
           Three ways to read the lot. The lens: hold it and drag, and every bay under it lights up as free, booked, ending soon
@@ -395,48 +385,16 @@
         </div>
         <div class="facts" data-a="stagger" data-d="0.7" data-s="0.12">
           <div><span class="mono-s">01</span><div><h3>Clashes are crossed out</h3><p>Times that overlap someone else's booking can't be picked.</p></div></div>
-          <div><span class="mono-s">02</span><div><h3>A pass with a code</h3><p>Show it at the gate. Refresh, and it's still there.</p></div></div>
+          <div><span class="mono-s">02</span><div><h3>A pass with a code</h3><p>Show it at the gate. It survives a refresh and opens in any tab.</p></div></div>
           <div><span class="mono-s">03</span><div><h3>Late? 15 minutes' grace</h3><p>After that the bay opens up for someone else.</p></div></div>
         </div>
-        <div class="day card" data-scene="day" data-a="rise" data-d="0.35">
-          <div class="day-top"><span class="mono-s caps">Today · Bay A-07</span><span class="mono-s dim">08:00 – 20:00</span></div>
-          <div class="track">
-            <i class="blk taken" style="--a: 9; --b: 11.5"></i>
-            <i class="blk taken" style="--a: 16.5; --b: 18"></i>
-            <i class="blk ghost" style="--a: 10.5; --b: 12.5"><em class="mono-s">✕ clashes</em></i>
-            <i class="blk yours" style="--a: 13; --b: 15"><em class="mono-s">✓ 13:00–15:00 · yours</em></i>
-          </div>
-          <div class="ticks"></div>
-          <div class="legend mono-s">
-            <span><i class="lg taken"></i>taken</span>
-            <span><i class="lg yours"></i>your window</span>
-            <span><i class="lg ghost"></i>clash · can't pick</span>
-          </div>
-        </div>
-        <div class="pass" data-scene="pass">
-          <div class="pass-main">
-            <div class="pass-top"><span>Arrivo · bay pass</span><span>KIET main lot</span></div>
-            <div class="pass-bay">A-07</div>
-            <div class="pass-grid">
-              <div><span>Arrive</span><b>13:00</b></div>
-              <div><span>Leave</span><b>15:00</b></div>
-              <div><span>Vehicle</span><b>UP14 AB 1234</b></div>
-              <div><span>Row A</span><b>Ground Edge</b></div>
-              <div><span>Date</span><b>30 Oct</b></div>
-              <div><span>Paid</span><b>₹45</b></div>
-            </div>
-          </div>
-          <div class="pass-stub">
-            <svg class="barcode" data-barcode="PS-7KQ2M" viewBox="0 0 160 150" preserveAspectRatio="none"></svg>
-            <span class="code">PS-7KQ2M</span>
-            <span class="hand">show at the gate</span>
-          </div>
-        </div>
-        <span class="hand" style="position: absolute; right: 120px; bottom: 96px" data-a="fade" data-d="2.2">nobody else can take it.</span>
+        <figure class="shot panelshot" data-shot="assets/img/bay-detail.jpg" data-crop="1162,64,454,930" data-a="clip" data-d="0.4"></figure>
+        <svg class="arrow" viewBox="0 0 46 30" data-a="draw" data-d="1"><path d="M2 15h40M30 4l12 11-12 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <figure class="shot ticketshot" data-shot="assets/img/ticket.jpg" data-crop="1162,64,454,930" data-scene="pass"></figure>
+        <span class="hand" style="position: absolute; right: 150px; bottom: 96px" data-a="fade" data-d="2">nobody else can take it.</span>
         <aside class="notes">
-          Top right is one bay's day: grey hours are taken, yellow is the window you're picking, and a window that clashes with
-          someone else can't be picked. Below is the pass you get, with the code you show at the gate. If two people try the
-          same slot, the second one is refused, which we'll show in the demo.
+          On the left, the booking panel: arrival time, how long, number plate, total. On the right, the pass you get. If two
+          people try the same slot, the second one is refused, which we'll show in the demo.
         </aside>
       </section>
 
@@ -445,34 +403,29 @@
         <div class="head">
           <div class="kicker" data-a="scramble"><span class="n">09</span><span class="bar"></span><span>Demonstration</span></div>
           <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Now, live.</h2>
-          <p class="lede" data-a="rise" data-d="0.4">What we'll show on the real site, running on this laptop.</p>
         </div>
-        <div class="term card" data-scene="demo" data-a="rise" data-d="0.5">
-          <div class="term-dots"><i></i><i></i><i></i></div>
-          <div class="term-lines">
-            <span><b>$</b> cd backend</span>
-            <span><b>$</b> python server.py</span>
-            <span class="gap"></span>
-            <span class="out"><b>→</b> http://localhost:8787</span>
-            <span class="out dim">&nbsp;&nbsp;96 bays · live updates on</span>
+        <div class="laptop" data-scene="demo" data-a="rise" data-d="0.3">
+          <div class="scr">
+            <div class="in">
+              <img src="assets/img/lot-light.jpg" alt="" class="on" />
+              <img src="assets/img/lens-light.jpg" alt="" />
+              <img src="assets/img/tilt-dark.jpg" alt="" />
+              <img src="assets/img/ticket.jpg" alt="" />
+            </div>
           </div>
+          <div class="base"></div>
         </div>
-        <div class="status" data-a="rise" data-d="0.9">
+        <div class="phone" data-a="rise" data-d="0.5">
+          <div class="in"><img src="assets/img/phone-lot.jpg" alt="" /></div>
+        </div>
+        <div class="status" data-a="rise" data-d="0.8">
           <span class="mono" data-live-status><span class="live-dot"></span>checking localhost:8787…</span>
           <button class="open" data-open-live>Open the live site<span class="i">L</span></button>
         </div>
-        <ol class="steps-live" data-a="stagger" data-d="0.6" data-s="0.1">
-          <li><span class="n">01</span><div><h3>Tap a free bay</h3><p>Straight from the live plan of the KIET lot.</p></div><span class="who" data-who="Design &amp; frontend"></span></li>
-          <li><span class="n">02</span><div><h3>Hold it, get a pass</h3><p>Hours, number plate and total, then the bay pass and its code.</p></div><span class="who" data-who="Design &amp; frontend"></span></li>
-          <li><span class="n">03</span><div><h3>Sweep the lens</h3><p>X-ray the lot, then let go to open the bay under it.</p></div><span class="who" data-who="Lot plan &amp; lens"></span></li>
-          <li><span class="n">04</span><div><h3>Tilt it to 3D</h3><p>The campus buildings rise out of the plan.</p></div><span class="who" data-who="Lot plan &amp; lens"></span></li>
-          <li><span class="n">05</span><div><h3>Book it twice</h3><p>Same bay, same time, from a second window: refused (409).</p></div><span class="who" data-who="Backend"></span></li>
-        </ol>
         <aside class="notes">
-          Press L (or the button) to open the real site inside the deck. Vaibhav: tap a free bay, book it, get the pass.
-          Kritika: pick up the lens and drag it, then switch to 3D. Prisha: try booking the same bay from a second (private)
-          window to show it gets refused. Esc or the yellow button comes back to the slides. If the server isn't running,
-          start it with: cd backend, python server.py.
+          Press L (or the button) to open the real site inside the deck. Show: tap a free bay, book it, get the pass. Then pick
+          up the lens and drag it. Then try booking the same bay from a second tab to show it gets refused. Esc or the yellow
+          button comes back to the slides. If the server isn't running, start it with: cd backend, python server.py.
         </aside>
       </section>
 
