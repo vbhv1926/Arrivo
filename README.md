@@ -70,3 +70,7 @@ why we built Arrivo and what makes it unique. `brag-output/brag.mp4` is a short 
 of the site.
 
 More detail on each part is in `frontend/README.md` and `backend/README.md`.
+
+## Team
+
+Built by [@vbhv1926](https://github.com/vbhv1926) and [@Vnshdecoy1](https://github.com/Vnshdecoy1).
