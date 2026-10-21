@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 import { AnimatePresence, motion } from 'motion/react'
 import {
   BUILDINGS, DAY, IMG, ORIENT, ROWS, SCREEN, SLOTS, SLOT_BY_ID, STATUS, TREES, TYPES, VIEW,
-  dayStart, fmtShort, fmtTime, orientRect, rowBox, useLot,
+  dayStart, fmtShort, fmtTime, fmtWhen, orientRect, rowBox, useLot,
 } from './lot'
 import { EASE, Ticker, useMedia } from './ui'
 /* ------------------------------------------------------------------ */
@@ -77,8 +77,15 @@ function TypeMark({ s, upright }) {
 function Bay({ s, st, selected, xray, uid, upright }) {
   const status = st.status
   const carBooking = status === 'taken' || status === 'ending' || (status === 'mine' && st.current) ? st.current : null
+  // someone else is still parked here, but you've booked the next slot
+  const mineNext = Boolean(st.mine) && status !== 'mine'
   return (
-    <g className={`bay is-${status}${selected ? ' is-sel' : ''}`} data-id={s.id} data-status={status} style={{ '--d': `${DELAY[s.id]}s` }}>
+    <g
+      className={`bay is-${status}${selected ? ' is-sel' : ''}${mineNext ? ' has-mine' : ''}`}
+      data-id={s.id}
+      data-status={status}
+      style={{ '--d': `${DELAY[s.id]}s` }}
+    >
       <rect className="bay-box" x={s.x} y={s.y} width={s.w} height={s.h} rx="2.4" />
       {status === 'held' && <rect x={s.x} y={s.y} width={s.w} height={s.h} rx="2.4" fill={`url(#${uid}-hatch)`} className="bay-hatch" />}
       {!xray && (
@@ -90,6 +97,7 @@ function Bay({ s, st, selected, xray, uid, upright }) {
         <rect className="bay-ring" x={s.x - 1.3} y={s.y - 1.3} width={s.w + 2.6} height={s.h + 2.6} rx="3.4" />
       )}
       {!xray && !carBooking && <TypeMark s={s} upright={upright} />}
+      {mineNext && <circle className="mine-dot" cx={s.x + s.w - 3.8} cy={s.y + 3.8} r="2.7" />}
     </g>
   )
 }
@@ -105,8 +113,11 @@ function xrayText(st, now, narrow) {
       return ['ENDING', `in ${fmtShort(st.current.end - now)}`]
     case 'held':
       return ['RSVD', narrow ? fmtTime(st.next.start) : `at ${fmtTime(st.next.start)}`]
-    default:
-      return ['YOURS', st.current ? (narrow ? fmtTime(st.current.end) : `till ${fmtTime(st.current.end)}`) : fmtTime(st.next.start)]
+    default: {
+      const b = st.mine
+      if (b === st.current) return ['YOURS', narrow ? fmtTime(b.end) : `till ${fmtTime(b.end)}`]
+      return ['YOURS', narrow ? fmtTime(b.start) : `from ${fmtTime(b.start)}`]
+    }
   }
 }
 
@@ -487,13 +498,16 @@ function describe(st, now) {
     case 'free':
       return st.freeUntil >= end ? 'free all day' : `free till ${fmtTime(st.freeUntil)}`
     case 'taken':
-      return `booked till ${fmtTime(st.current.end)}`
-    case 'ending':
-      return `frees in ${fmtShort(st.current.end - now)}`
+    case 'ending': {
+      const now_ = st.status === 'ending' ? `frees in ${fmtShort(st.current.end - now)}` : `booked till ${fmtTime(st.current.end)}`
+      return st.mine ? `${now_} · yours next at ${fmtWhen(st.mine.start, now)}` : now_
+    }
     case 'held':
       return `driver due ${fmtTime(st.next.start)}`
-    default:
-      return st.current ? `yours till ${fmtTime(st.current.end)}` : `yours from ${fmtTime(st.next.start)}`
+    default: {
+      const b = st.mine
+      return b === st.current ? `yours till ${fmtWhen(b.end, now)}` : `yours from ${fmtWhen(b.start, now)}`
+    }
   }
 }
 

@@ -237,19 +237,33 @@ export const maskPlate = (p) => {
   return parts.length >= 3 ? `${parts[0]} •• ${parts[parts.length - 1]}` : p
 }
 
+// A bay's state right now. `mine` is your booking here, if any: the one you're parked on,
+// otherwise your next one. Any upcoming booking of yours makes the bay "Yours" straight away,
+// so a booking shows up on the plan and in the list the moment it's made, not 30 minutes before.
 export function slotState(list = [], now) {
   let current = null
   let next = null
+  let mine = null
   for (const b of list) {
-    if (b.start <= now && now < b.end) current = b
-    else if (b.start > now && (!next || b.start < next.start)) next = b
+    if (b.end <= now) continue
+    if (b.start <= now) current = b
+    else if (!next || b.start < next.start) next = b
+    if (b.mine && (!mine || b.start < mine.start)) mine = b
   }
   let status
   if (current) status = current.mine ? 'mine' : current.end - now <= ENDING_SOON ? 'ending' : 'taken'
-  else if (next && next.start - now <= HOLD_AHEAD) status = next.mine ? 'mine' : 'held'
+  else if (mine) status = 'mine'
+  else if (next && next.start - now <= HOLD_AHEAD) status = 'held'
   else status = 'free'
   const freeUntil = current ? null : next ? next.start : dayStart(now) + DAY
-  return { status, current, next, freeUntil }
+  return { status, current, next, mine, freeUntil }
+}
+
+// "14:30" today, "midnight" for 00:00 tomorrow, "tmrw 01:00" after that.
+export function fmtWhen(t, now) {
+  if (dayStart(t) === dayStart(now)) return fmtTime(t)
+  if (t === dayStart(t)) return 'midnight'
+  return `tmrw ${fmtTime(t)}`
 }
 
 export const STATUS = {
@@ -493,9 +507,11 @@ export function LotProvider({ children }) {
       const me = ++run
       clearTimeout(retry)
       pending = []
+      // Today and tomorrow: a slot booked for after midnight (say, right after a car that
+      // leaves at 00:00) must still show up on the plan and in the list.
       const from = dayStart(Date.now())
       try {
-        const snap = await api.snapshot(from, from + DAY)
+        const snap = await api.snapshot(from, from + 2 * DAY)
         if (!alive || me !== run) return
         windowRef.current = { from: snap.from, to: snap.to }
         setBookings(group(snap.bookings.map(fromApi)))
@@ -513,6 +529,9 @@ export function LotProvider({ children }) {
     }
 
     syncRef.current = sync
+    // Load the lot straight away, not only once the live stream connects: behind some
+    // proxies and tunnels the stream never opens, and the lot would otherwise look empty.
+    sync()
     const close = openStream({
       onOpen: sync,
       onChange: (msg) => (pending ? pending.push(msg) : apply(msg)),

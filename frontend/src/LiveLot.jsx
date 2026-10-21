@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useDragControls } from 'motion/react'
 import {
   DAY, HOUR, MIN, ROWS, ROW_BY_ID, SLOTS, SLOT_BY_ID, STATUS, TYPES,
-  ceilTo, dayStart, fmtClock, fmtCountdown, fmtDur, fmtShort, fmtTime, hash, maskPlate, overlaps, rupees,
+  ceilTo, dayStart, fmtClock, fmtCountdown, fmtDur, fmtShort, fmtTime, fmtWhen, hash, maskPlate, overlaps, rupees,
   useLot, useNow,
 } from './lot'
 import LotMap from './LotMap'
@@ -195,18 +195,26 @@ function StatusBlock({ st, now }) {
       </motion.div>
     )
   }
-  const b = st.current || st.next
+  const mine = st.status === 'mine'
+  const b = mine ? st.mine : st.current
+  const parked = b === st.current
   const total = b.end - b.start
   const elapsed = Math.min(Math.max(now - b.start, 0), total)
   return (
     <motion.div variants={item} className="sb">
       <div className="sb-row">
         <div className="sb-big">
-          {st.status === 'mine' ? 'Yours' : 'Booked'} till {fmtTime(b.end)}
+          {mine
+            ? parked
+              ? `Yours till ${fmtWhen(b.end, now)}`
+              : `Yours from ${fmtWhen(b.start, now)}`
+            : `Booked till ${fmtTime(b.end)}`}
         </div>
-        {st.current && <div className="sb-count mono">{fmtCountdown(b.end - now)} left</div>}
+        <div className="sb-count mono">
+          {parked ? `${fmtCountdown(b.end - now)} left` : `starts in ${fmtDur(b.start - now)}`}
+        </div>
       </div>
-      {st.current && (
+      {parked && (
         <div className="meter">
           <span className="meter-fill" style={{ width: `${(elapsed / total) * 100}%` }} />
           {Array.from({ length: 9 }, (_, i) => (
@@ -215,11 +223,16 @@ function StatusBlock({ st, now }) {
         </div>
       )}
       <p className="body">
-        {st.status === 'mine'
-          ? `${b.plate} · code ${b.code}`
+        {mine
+          ? `${b.plate} · ${fmtWhen(b.start, now)}–${fmtWhen(b.end, now)} · code ${b.code}`
           : `${maskPlate(b.plate)} · via ${b.via} · since ${fmtTime(b.start)}`}
-        {st.status === 'ending' && ' · frees up soon, book the slot right after'}
+        {st.status === 'ending' && !st.mine && ' · frees up soon, book the slot right after'}
       </p>
+      {!mine && st.mine && (
+        <p className="body sb-next">
+          Yours next: {fmtWhen(st.mine.start, now)}–{fmtWhen(st.mine.end, now)} · code {st.mine.code}
+        </p>
+      )}
     </motion.div>
   )
 }
@@ -337,7 +350,7 @@ function SlotDetail({ id, onClose }) {
             <DayStrip list={list} now={now} preview={phase === 'form' && !mineNow ? { start, end, clash: !!clash } : null} />
           </motion.div>
 
-          {mineNow && st.status === 'mine' ? (
+          {mineNow ? (
             <motion.div variants={item} className="done">
               <Ticket b={mineNow} s={s} />
             </motion.div>
@@ -607,12 +620,24 @@ function bookingCell(st, tick) {
   }
   if (st.status === 'held')
     return { main: `Due ${fmtTime(st.next.start)}`, sub: `${maskPlate(st.next.plate)} on the way`, frac: null }
-  const b = st.current || st.next
-  const frac = st.current ? Math.min(1, Math.max(0, (tick - b.start) / (b.end - b.start))) : 0
+  const fracOf = (b) => Math.min(1, Math.max(0, (tick - b.start) / (b.end - b.start)))
+  if (st.status === 'mine') {
+    const b = st.mine
+    if (b === st.current)
+      return { main: `Yours till ${fmtWhen(b.end, tick)}`, sub: `${fmtShort(b.end - tick)} left · since ${fmtTime(b.start)}`, frac: fracOf(b) }
+    return {
+      main: `Yours from ${fmtWhen(b.start, tick)}`,
+      sub: `till ${fmtWhen(b.end, tick)} · starts in ${fmtShort(b.start - tick)}`,
+      frac: null,
+    }
+  }
+  const b = st.current
   return {
-    main: `${st.status === 'mine' ? 'Yours' : 'Booked'} till ${fmtTime(b.end)}`,
-    sub: st.current ? `${fmtShort(b.end - tick)} left · since ${fmtTime(b.start)}` : `starts ${fmtTime(b.start)}`,
-    frac,
+    main: `Booked till ${fmtTime(b.end)}`,
+    sub: st.mine
+      ? `${fmtShort(b.end - tick)} left · yours next at ${fmtWhen(st.mine.start, tick)}`
+      : `${fmtShort(b.end - tick)} left · since ${fmtTime(b.start)}`,
+    frac: fracOf(b),
   }
 }
 

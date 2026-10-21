@@ -2029,3 +2029,30 @@
     max-height: 640px;
   }
 }
+
+/* your booking is next on a bay someone is still parked in */
+.mine-dot {
+  fill: var(--sun);
+  stroke: #17170f;
+  stroke-width: 0.8;
+  pointer-events: none;
+}
+.plan-base .bay.has-mine .bay-box {
+  stroke: var(--sun-line);
+  stroke-width: 1.1;
+}
+.sb-next {
+  margin-top: 8px;
+  color: var(--ink);
+}
+.sb-next::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow: inset 0 0 0 1px var(--sun-line);
+  vertical-align: 1px;
+}

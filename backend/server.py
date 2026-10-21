@@ -347,20 +347,26 @@ def ceil_to(t, step):
 def slot_state(bookings, now):
     """What a bay is doing at `now`: free, taken, ending, held or mine.
     Same rule as frontend/src/lot.jsx, so the API and the map always agree."""
-    current = nxt = None
+    current = nxt = mine = None
     for b in bookings:
-        if b["start"] <= now < b["end"]:
+        if b["end"] <= now:
+            continue
+        if b["start"] <= now:
             current = b
-        elif b["start"] > now and (nxt is None or b["start"] < nxt["start"]):
+        elif nxt is None or b["start"] < nxt["start"]:
             nxt = b
+        if b["mine"] and (mine is None or b["start"] < mine["start"]):
+            mine = b  # your booking here: the one you're parked on, else your next one
     if current:
         status = "mine" if current["mine"] else "ending" if current["end"] - now <= ENDING_SOON else "taken"
+    elif mine:
+        status = "mine"  # any upcoming booking of yours shows as yours right away
     elif nxt and nxt["start"] - now <= HOLD_AHEAD:
-        status = "mine" if nxt["mine"] else "held"
+        status = "held"
     else:
         status = "free"
     free_until = None if current else nxt["start"] if nxt else day_start(now) + DAY
-    return {"status": status, "current": current, "next": nxt, "freeUntil": free_until}
+    return {"status": status, "current": current, "next": nxt, "mine": mine, "freeUntil": free_until}
 
 
 def mask_plate(plate):
@@ -820,7 +826,8 @@ def lot_bays(req, lot_id):
     """Every bay in the lot and what it is doing right now."""
     lot, now = lot_or_404(lot_id), now_ms()
     by_bay = {}
-    for b in bookings_in_lot(lot["id"], now, day_start(now) + DAY):
+    # today and tomorrow, same as the site, so a slot booked for after midnight still counts
+    for b in bookings_in_lot(lot["id"], now, day_start(now) + 2 * DAY):
         by_bay.setdefault(b["bay_id"], []).append(booking_out(b, req.owner))
     counts = {"free": 0, "taken": 0, "ending": 0, "held": 0, "mine": 0, "total": 0}
     bays = []
