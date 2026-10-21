@@ -14,3 +14,6 @@ backend/data/
 presentation-build/
 brag-output/composition/.hyperframes/
 brag-output/composition/.thumbnails/
+
+# office lock files (made while a .pptx is open)
+~$*
