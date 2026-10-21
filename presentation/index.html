@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrivo · INNOTECH'26 pitch</title>
+    <link rel="stylesheet" href="assets/fonts.css" />
+    <link rel="stylesheet" href="assets/deck.css" />
+    <script>
+      // ---- Edit your team here (shows on the title, team and last slides) ----
+      window.DECK = {
+        team: 'Team Arrivo',
+        members: [
+          { name: 'Krish Singh', role: 'Idea & research', explains: 'The problem, the survey of the lot and the SDG impact.' },
+          { name: 'Kritika Sakhuja', role: 'Lot plan & lens', explains: 'How the plan was traced from the satellite photo, the lens and 3D view.' },
+          { name: 'Prisha Soam', role: 'Backend', explains: 'server.py, the database rule against double booking and live updates.' },
+          { name: 'Vaibhav Kumar', role: 'Design & frontend', explains: 'The site, the booking flow, dark mode and the bay pass.' },
+        ],
+        liveUrl: 'http://localhost:8787',
+      }
+      if (location.search.includes('print')) document.documentElement.classList.add('print')
+    </script>
+  </head>
+  <body>
+    <div id="stage">
+      <!-- =============================================================== 01 -->
+      <section class="slide s-title" data-trans="flood" data-tag="" data-name="Title">
+        <div class="ruler-l" data-ruler></div>
+        <div class="seatmap card" data-scene="seatmap" data-a="rise" data-d="0.5">
+          <div class="head">
+            <span class="live-dot on"></span>
+            <span class="mono">KIET main lot · rows A and C · live</span>
+            <span class="mono free"><b data-free>7</b>/96 free</span>
+          </div>
+          <div class="rows">
+            <span class="lbl">A</span>
+            <div class="bays flip" data-row="A"></div>
+            <span></span>
+            <div class="road"><span class="mono-s caps">Service road · all bumpers this way</span></div>
+            <span class="lbl">C</span>
+            <div class="bays" data-row="C"></div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="mono" data-a="scramble" data-d="0.4">INNOTECH'26 · 30 October 2026</span>
+          <span class="ev" data-a="words" data-d="0.5">Category 6 · Gen Z Budding Project Solutions</span>
+          <span class="body" data-a="rise" data-d="0.8">Dept. of IT &amp; CSE (Cyber Security), KIET Deemed to be University</span>
+          <span class="mono" data-a="rise" data-d="1"><span data-team>Team Arrivo</span></span>
+          <span class="names" data-names data-a="rise" data-d="1.1"></span>
+        </div>
+        <div class="big" data-a="chars" data-d="0.2">arrivo<span class="d" data-dot></span></div>
+        <div class="tagline" data-a="words" data-d="0.9">Park like you booked a seat.</div>
+        <div class="go" data-a="fade" data-d="1.8">
+          <span class="hand">press → to begin</span>
+        </div>
+        <aside class="notes">
+          Hi, we are <team>. This is Arrivo: you book a parking bay before you leave, the way you pick a seat for a film.
+          The card on the left shows rows A and C of the KIET main lot, the way the site draws them (the real live plan comes on slide 10).
+        </aside>
+      </section>
+
+      <!-- =============================================================== 02 -->
+      <section class="slide s-problem" data-theme="dark" data-trans="grid" data-tag="Concept &amp; Originality|Understanding of the problem" data-name="Problem">
+        <div class="left">
+          <div class="kicker" data-a="scramble"><span class="n">01</span><span class="bar"></span><span>Every weekday morning</span></div>
+          <div class="clock num" data-a="chars" data-d="0.1">09:58</div>
+          <h2 class="title" data-a="words" data-d="0.4">The lot is full. You just don't know it yet.</h2>
+          <p class="body" data-a="rise" data-d="0.9">
+            So you circle. Row A, row C, back past the gate. The lecture starts without you, and the car behind you is doing
+            the same lap.
+          </p>
+        </div>
+        <div class="scene" data-scene="circling" data-a="fade" data-d="0.3">
+          <svg viewBox="0 0 760 600" class="circsvg"></svg>
+          <span class="mono lap" data-lap>lap 01</span>
+        </div>
+        <div class="stats">
+          <div class="stat" data-a="rise" data-d="1.1">
+            <div class="num"><span data-a="count" data-to="30" data-d="1.2">0</span><small>%</small></div>
+            <p>of traffic in busy city centres is drivers cruising for a parking space.</p>
+            <span class="src">Shoup, "Cruising for parking", 2006</span>
+          </div>
+          <div class="stat" data-a="rise" data-d="1.25">
+            <div class="num"><span data-a="count" data-to="17" data-d="1.35">0</span><small>h</small></div>
+            <p>a year the average driver spends hunting for parking.</p>
+            <span class="src">INRIX parking study, 2017</span>
+          </div>
+          <div class="stat" data-a="rise" data-d="1.4">
+            <div class="num sun">0</div>
+            <p>ways to know which of the 96 bays at KIET is free before you drive in. Until now.</p>
+            <span class="src">our count of the KIET main lot</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Understanding the problem. Studies of city traffic find about 30% of drivers in busy centres are just looking for
+          parking (Shoup, 2006). INRIX measured 17 hours a year per driver. On our own campus there is no way to see a free
+          bay before you drive in, so everyone circles.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 03 -->
+      <section class="slide s-causes dots dots-fade" data-trans="lens" data-tag="Concept &amp; Originality|Understanding of the problem" data-name="Why">
+        <div class="head">
+          <div>
+            <div class="kicker" data-a="scramble"><span class="n">02</span><span class="bar"></span><span>Why it keeps happening</span></div>
+            <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">First come,<br />first guessed.</h2>
+          </div>
+          <p class="lede" data-a="rise" data-d="0.5">
+            The problem isn't too few bays. It's that nobody can see them, book them, or plan them.
+          </p>
+        </div>
+        <div class="cards" data-a="stagger" data-d="0.6" data-s="0.1">
+          <div class="cause card">
+            <svg class="ico" viewBox="0 0 200 130">
+              <rect x="10" y="20" width="36" height="80" rx="6" class="g" />
+              <rect x="56" y="20" width="36" height="80" rx="6" class="g" />
+              <rect x="102" y="20" width="36" height="80" rx="6" class="g" />
+              <rect x="148" y="20" width="36" height="80" rx="6" class="g" />
+              <path d="M40 66c22-24 62-34 96-10M60 40l84 54" class="s" />
+            </svg>
+            <span class="n">01</span>
+            <h3>No visibility</h3>
+            <p>From the gate you can't tell which of 96 bays is empty, so you go and look.</p>
+          </div>
+          <div class="cause card">
+            <svg class="ico" viewBox="0 0 200 130">
+              <rect x="20" y="16" width="70" height="98" rx="8" />
+              <path d="M34 40h42M34 58h42M34 76h26" />
+              <rect x="112" y="24" width="48" height="90" rx="6" class="g" />
+              <path d="M124 60h24M136 48v24" class="s" />
+            </svg>
+            <span class="n">02</span>
+            <h3>No booking</h3>
+            <p>Seats, trains and tables can all be booked. A 2.5 × 5 m bay still can't.</p>
+          </div>
+          <div class="cause card">
+            <svg class="ico" viewBox="0 0 200 130">
+              <path d="M20 112h160" />
+              <rect x="34" y="70" width="18" height="42" class="g" />
+              <rect x="64" y="40" width="18" height="72" class="g" />
+              <rect x="94" y="24" width="18" height="88" class="g" />
+              <rect x="124" y="56" width="18" height="56" class="g" />
+              <path d="M28 24l144 82" class="s" />
+            </svg>
+            <span class="n">03</span>
+            <h3>Blind operators</h3>
+            <p>Nobody knows which rows fill first, or when, so nothing gets planned.</p>
+          </div>
+          <div class="cause card">
+            <svg class="ico" viewBox="0 0 200 130">
+              <circle cx="100" cy="66" r="46" />
+              <path d="M100 38v28l18 12" />
+              <path d="M150 30c16 12 24 30 22 50" class="s" />
+              <path d="M166 74l6 8 8-6" class="s" />
+            </svg>
+            <span class="n">04</span>
+            <h3>Wasted minutes</h3>
+            <p>Every lap burns fuel and time, for you and for the queue behind you.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          Four root causes: drivers can't see free bays, they can't book one, the people running the lot have no data, and
+          all of that turns into circling, which wastes time and fuel.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 04 -->
+      <section class="slide s-idea" data-trans="wipe" data-tag="Concept &amp; Originality|Originality of idea" data-name="Idea" data-lx="1380" data-ly="540">
+        <div class="left">
+          <div class="kicker" data-a="scramble"><span class="n">03</span><span class="bar"></span><span>The idea</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Book a bay the way you book a seat.</h2>
+          <p class="body" data-a="rise" data-d="0.6">
+            Ticket apps made picking your exact seat feel normal: you see the hall, you pick the empty one, it's held for you.
+            Arrivo brings that to parking. You see every bay on a live plan, pick a free one, choose your hours, and it's
+            yours when you arrive.
+          </p>
+        </div>
+        <div class="stagebox" data-scene="morph">
+          <div class="morph"></div>
+        </div>
+        <div class="note" data-a="fade" data-d="2.2"><span class="hand">same idea, new place.</span></div>
+        <aside class="notes">
+          Originality. Everybody already understands seat maps from booking films. We asked: why not a seat map for parking
+          bays? Watch the cinema turn into a parking lot. That one idea is the whole product.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 05 -->
+      <section class="slide s-compare" data-trans="drive" data-tag="Concept &amp; Originality|Originality of idea" data-name="Before / after">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">04</span><span class="bar"></span><span>What changes</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Before and after.</h2>
+        </div>
+        <div class="ba" data-a="stagger" data-d="0.4" data-s="0.09">
+          <div class="ba-row h"><span></span><span class="no">Without Arrivo</span><span class="yes">With Arrivo</span></div>
+          <div class="ba-row">
+            <span class="k">Finding a bay</span>
+            <span class="no"><span class="x"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke-width="2" stroke-linecap="round" /></svg></span>Drive in, circle, look</span>
+            <span class="yes"><span class="t"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Tap a free bay on a live plan</span>
+          </div>
+          <div class="ba-row">
+            <span class="k">Knowing it'll be free</span>
+            <span class="no"><span class="x"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke-width="2" stroke-linecap="round" /></svg></span>Hope</span>
+            <span class="yes"><span class="t"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Held for your hours</span>
+          </div>
+          <div class="ba-row">
+            <span class="k">Running late</span>
+            <span class="no"><span class="x"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke-width="2" stroke-linecap="round" /></svg></span>Someone else took it</span>
+            <span class="yes"><span class="t"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></span>15-minute grace window</span>
+          </div>
+          <div class="ba-row">
+            <span class="k">Two cars, one bay</span>
+            <span class="no"><span class="x"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke-width="2" stroke-linecap="round" /></svg></span>An argument at the gate</span>
+            <span class="yes"><span class="t"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Impossible: the database refuses it</span>
+          </div>
+          <div class="ba-row">
+            <span class="k">The lot's owner</span>
+            <span class="no"><span class="x"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke-width="2" stroke-linecap="round" /></svg></span>Guesses how it's used</span>
+            <span class="yes"><span class="t"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Every booking is data</span>
+          </div>
+        </div>
+        <div class="newbits" data-a="stagger" data-d="1.1" data-s="0.08">
+          <span class="mono">What's new here</span>
+          <span class="chip is-sun"><b>Bay-level booking</b></span>
+          <span class="chip"><b>X-ray lens</b> over a live plan</span>
+          <span class="chip">A lot <b>traced from its satellite photo</b></span>
+          <span class="chip"><b>Live</b> for every viewer at once</span>
+        </div>
+        <aside class="notes">
+          Same problem, side by side. Left is today, right is Arrivo. The last row matters: the person running the lot finally
+          gets data. Bottom line: what's new is booking an exact bay, on a plan of the real lot, live for everyone.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 06 -->
+      <section class="slide s-steps" data-trans="grid" data-tag="Working prototype|How it works" data-name="How it works">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">05</span><span class="bar"></span><span>How a booking works</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Five steps, lot to parked.</h2>
+        </div>
+        <div class="steps">
+          <div class="track"><i data-a="line" data-d="0.5"></i></div>
+          <div class="cols">
+            <div class="step">
+              <svg class="art" viewBox="0 0 300 210" data-a="draw" data-d="0.6">
+                <rect x="14" y="20" width="272" height="170" rx="16" class="o" />
+                <path d="M14 104h272" class="g" />
+                <path d="M46 20v62M80 20v62M114 20v62M148 20v62M182 20v62M216 20v62M250 20v62M46 126v64M80 126v64M114 126v64M148 126v64M182 126v64M216 126v64M250 126v64" class="o" />
+              </svg>
+              <span class="node" data-a="pop" data-d="0.6"></span>
+              <p class="n" data-a="fade" data-d="0.7">01</p>
+              <h3 data-a="rise" data-d="0.7">A lot.</h3>
+              <p data-a="rise" data-d="0.8">Each lot is drawn once, row by row, from its satellite photo.</p>
+            </div>
+            <div class="step">
+              <svg class="art" viewBox="0 0 300 210" data-a="draw" data-d="0.9">
+                <rect x="112" y="40" width="70" height="140" rx="8" class="w" />
+                <path d="M112 22h70M112 16v12M182 16v12" class="dm" />
+                <path d="M200 40v140M194 40h12M194 180h12" class="dm" />
+                <text x="122" y="12" class="sun">2.5 m</text>
+                <text x="210" y="114" class="sun">5.0 m</text>
+                <text x="126" y="116">A-14</text>
+              </svg>
+              <span class="node" data-a="pop" data-d="0.9"></span>
+              <p class="n" data-a="fade" data-d="1">02</p>
+              <h3 data-a="rise" data-d="1">A bay.</h3>
+              <p data-a="rise" data-d="1.1">Every bay has a name, a size and a type: standard, compact, EV or step-free.</p>
+            </div>
+            <div class="step">
+              <svg class="art" viewBox="0 0 300 210" data-a="draw" data-d="1.2">
+                <path d="M12 140h276" class="o" />
+                <path d="M12 140v10M58 140v10M104 140v10M150 140v10M196 140v10M242 140v10M288 140v10" class="o" />
+                <rect x="30" y="108" width="60" height="20" rx="5" class="g" />
+                <rect x="210" y="108" width="54" height="20" rx="5" class="g" />
+                <rect x="120" y="102" width="70" height="30" rx="7" class="y" />
+                <text x="118" y="88" class="sun">14:00 → 16:00</text>
+                <text x="10" y="176">08</text>
+                <text x="140" y="176">14</text>
+                <text x="268" y="176">20</text>
+              </svg>
+              <span class="node" data-a="pop" data-d="1.2"></span>
+              <p class="n" data-a="fade" data-d="1.3">03</p>
+              <h3 data-a="rise" data-d="1.3">A window.</h3>
+              <p data-a="rise" data-d="1.4">Pick when you arrive and how long you stay. Taken hours show grey.</p>
+            </div>
+            <div class="step">
+              <svg class="art" viewBox="0 0 300 210" data-a="draw" data-d="1.5">
+                <rect x="40" y="40" width="64" height="140" rx="8" class="g" />
+                <rect x="118" y="40" width="64" height="140" rx="8" class="y" />
+                <rect x="196" y="40" width="64" height="140" rx="8" class="g" />
+                <text x="126" y="116">HELD</text>
+                <path d="M250 20c-28-10-58 0-70 14" class="dm" />
+                <path d="M176 26l4 10 10-4" class="dm" />
+              </svg>
+              <span class="node" data-a="pop" data-d="1.5"></span>
+              <p class="n" data-a="fade" data-d="1.6">04</p>
+              <h3 data-a="rise" data-d="1.6">A hold.</h3>
+              <p data-a="rise" data-d="1.7">Confirm, and the bay is held in your name with a bay pass and a code.</p>
+            </div>
+            <div class="step is-last">
+              <svg class="art" viewBox="0 0 300 210" data-a="draw" data-d="1.8">
+                <rect x="118" y="40" width="64" height="140" rx="8" class="y" />
+                <rect x="128" y="62" width="44" height="96" rx="14" class="c" />
+                <path d="M30 196h240" class="g" />
+              </svg>
+              <span class="node" data-a="pop" data-d="1.8"></span>
+              <p class="n" data-a="fade" data-d="1.9">05</p>
+              <h3 data-a="rise" data-d="1.9">You arrive.</h3>
+              <p data-a="rise" data-d="2">Drive straight to your bay. Nobody else could book it.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Walk through the five steps. Point at step four: the hold is what makes it different from just showing free space.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 07 -->
+      <section class="slide s-lot" data-trans="lens" data-tag="Working prototype|Functionality of prototype" data-name="The real lot" data-lx="1380" data-ly="430">
+        <div class="left">
+          <div class="kicker" data-a="scramble"><span class="n">06</span><span class="bar"></span><span>Built on the real lot</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Drawn from the real KIET lot.</h2>
+          <p class="lede" data-a="rise" data-d="0.5">
+            We traced the lot beside the KIET football ground from its satellite photo. Every bay sits on the photo's own
+            pixels.
+          </p>
+          <div class="facts">
+            <div class="fact" data-a="rise" data-d="0.8">
+              <div class="num"><span data-a="count" data-to="96" data-d="0.9">0</span></div>
+              <p class="body">bays, all bookable</p>
+            </div>
+            <div class="fact" data-a="rise" data-d="0.9">
+              <div class="num"><span data-a="count" data-to="5" data-d="1">0</span></div>
+              <p class="body">rows, A to E</p>
+            </div>
+            <div class="fact" data-a="rise" data-d="1">
+              <div class="num">2.5<small>× 4.9 m</small></div>
+              <p class="body">a standard bay</p>
+            </div>
+            <div class="fact" data-a="rise" data-d="1.1">
+              <div class="num"><span data-a="count" data-to="7.7" data-dec="1" data-d="1.2">0</span><small>px/m</small></div>
+              <p class="body">50 m on the photo's scale bar = 385 px</p>
+            </div>
+          </div>
+        </div>
+        <div class="plan" data-scene="lot">
+          <svg class="lotsvg" viewBox="30 226 680 930" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <span class="mono-s src" data-a="fade" data-d="1.4">Source: Google Earth capture of KIET, Ghaziabad. Imagery © Google.</span>
+        <aside class="notes">
+          This is not a made-up layout. We took the satellite photo, marked the five rows in yellow, measured 50 metres on its
+          scale bar and placed every bay on those pixels. That's why the map on our site lines up with the real lot.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 08 -->
+      <section class="slide s-show dots dots-fade" data-trans="tear" data-tag="Working prototype|Functionality of prototype" data-name="Live plan">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">07</span><span class="bar"></span><span>The live plan</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Tap it, tilt it, or pick up the lens.</h2>
+        </div>
+        <p class="lede side" data-a="rise" data-d="0.5">Three ways to read the same live lot. Every view updates the moment anyone books.</p>
+        <div class="feats" data-scene="feats" data-a="stagger" data-d="0.4" data-s="0.12">
+          <div class="feat card">
+            <svg class="art" data-art="lens" viewBox="0 0 480 210"></svg>
+            <span class="n">01</span>
+            <h3>X-ray lens</h3>
+            <p>Hold it and drag. Bays light up as free, booked, ending or reserved over the real satellite photo. Let go to open one.</p>
+          </div>
+          <div class="feat card">
+            <svg class="art" data-art="tilt" viewBox="0 0 480 210"></svg>
+            <span class="n">02</span>
+            <h3>3D view</h3>
+            <p>Tilt the plan and the campus buildings rise out of it, so you know where you are. Plain CSS 3D, no 3D library.</p>
+          </div>
+          <div class="feat card">
+            <svg class="art" data-art="dark" viewBox="0 0 480 210"></svg>
+            <span class="n">03</span>
+            <h3>Dark mode</h3>
+            <p>One switch turns the whole site dark, plan included. It remembers your choice and follows your phone's setting.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          Three ways to read the lot. The lens: hold it and drag, and every bay under it lights up as free, booked, ending soon
+          or reserved, with the bay's details in a card. The 3D view lifts the buildings. And there's a dark mode.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 09 -->
+      <section class="slide s-pass" data-trans="flood" data-tag="Working prototype|Functionality of prototype" data-name="Booking">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">08</span><span class="bar"></span><span>Booking</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Pick your hours. Get a pass.</h2>
+          <p class="body" data-a="rise" data-d="0.5">Choose when you arrive and how long you stay, add your number plate, and hold the bay. About a minute, start to finish.</p>
+        </div>
+        <div class="facts" data-a="stagger" data-d="0.7" data-s="0.12">
+          <div><span class="mono-s">01</span><div><h3>Clashes are crossed out</h3><p>Times that overlap someone else's booking can't be picked.</p></div></div>
+          <div><span class="mono-s">02</span><div><h3>A pass with a code</h3><p>Show it at the gate. Refresh, and it's still there.</p></div></div>
+          <div><span class="mono-s">03</span><div><h3>Late? 15 minutes' grace</h3><p>After that the bay opens up for someone else.</p></div></div>
+        </div>
+        <div class="day card" data-scene="day" data-a="rise" data-d="0.35">
+          <div class="day-top"><span class="mono-s caps">Today · Bay A-07</span><span class="mono-s dim">08:00 – 20:00</span></div>
+          <div class="track">
+            <i class="blk taken" style="--a: 9; --b: 11.5"></i>
+            <i class="blk taken" style="--a: 16.5; --b: 18"></i>
+            <i class="blk ghost" style="--a: 10.5; --b: 12.5"><em class="mono-s">✕ clashes</em></i>
+            <i class="blk yours" style="--a: 13; --b: 15"><em class="mono-s">✓ 13:00–15:00 · yours</em></i>
+          </div>
+          <div class="ticks"></div>
+          <div class="legend mono-s">
+            <span><i class="lg taken"></i>taken</span>
+            <span><i class="lg yours"></i>your window</span>
+            <span><i class="lg ghost"></i>clash · can't pick</span>
+          </div>
+        </div>
+        <div class="pass" data-scene="pass">
+          <div class="pass-main">
+            <div class="pass-top"><span>Arrivo · bay pass</span><span>KIET main lot</span></div>
+            <div class="pass-bay">A-07</div>
+            <div class="pass-grid">
+              <div><span>Arrive</span><b>13:00</b></div>
+              <div><span>Leave</span><b>15:00</b></div>
+              <div><span>Vehicle</span><b>UP14 AB 1234</b></div>
+              <div><span>Row A</span><b>Ground Edge</b></div>
+              <div><span>Date</span><b>30 Oct</b></div>
+              <div><span>Paid</span><b>₹45</b></div>
+            </div>
+          </div>
+          <div class="pass-stub">
+            <svg class="barcode" data-barcode="PS-7KQ2M" viewBox="0 0 160 150" preserveAspectRatio="none"></svg>
+            <span class="code">PS-7KQ2M</span>
+            <span class="hand">show at the gate</span>
+          </div>
+        </div>
+        <span class="hand" style="position: absolute; right: 120px; bottom: 96px" data-a="fade" data-d="2.2">nobody else can take it.</span>
+        <aside class="notes">
+          Top right is one bay's day: grey hours are taken, yellow is the window you're picking, and a window that clashes with
+          someone else can't be picked. Below is the pass you get, with the code you show at the gate. If two people try the
+          same slot, the second one is refused, which we'll show in the demo.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 10 -->
+      <section class="slide s-demo" data-theme="dark" data-trans="grid" data-tag="Working prototype|Demonstration" data-name="Live demo">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">09</span><span class="bar"></span><span>Demonstration</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Now, live.</h2>
+          <p class="lede" data-a="rise" data-d="0.4">What we'll show on the real site, running on this laptop.</p>
+        </div>
+        <div class="term card" data-scene="demo" data-a="rise" data-d="0.5">
+          <div class="term-dots"><i></i><i></i><i></i></div>
+          <div class="term-lines">
+            <span><b>$</b> cd backend</span>
+            <span><b>$</b> python server.py</span>
+            <span class="gap"></span>
+            <span class="out"><b>→</b> http://localhost:8787</span>
+            <span class="out dim">&nbsp;&nbsp;96 bays · live updates on</span>
+          </div>
+        </div>
+        <div class="status" data-a="rise" data-d="0.9">
+          <span class="mono" data-live-status><span class="live-dot"></span>checking localhost:8787…</span>
+          <button class="open" data-open-live>Open the live site<span class="i">L</span></button>
+        </div>
+        <ol class="steps-live" data-a="stagger" data-d="0.6" data-s="0.1">
+          <li><span class="n">01</span><div><h3>Tap a free bay</h3><p>Straight from the live plan of the KIET lot.</p></div><span class="who" data-who="Design &amp; frontend"></span></li>
+          <li><span class="n">02</span><div><h3>Hold it, get a pass</h3><p>Hours, number plate and total, then the bay pass and its code.</p></div><span class="who" data-who="Design &amp; frontend"></span></li>
+          <li><span class="n">03</span><div><h3>Sweep the lens</h3><p>X-ray the lot, then let go to open the bay under it.</p></div><span class="who" data-who="Lot plan &amp; lens"></span></li>
+          <li><span class="n">04</span><div><h3>Tilt it to 3D</h3><p>The campus buildings rise out of the plan.</p></div><span class="who" data-who="Lot plan &amp; lens"></span></li>
+          <li><span class="n">05</span><div><h3>Book it twice</h3><p>Same bay, same time, from a second window: refused (409).</p></div><span class="who" data-who="Backend"></span></li>
+        </ol>
+        <aside class="notes">
+          Press L (or the button) to open the real site inside the deck. Vaibhav: tap a free bay, book it, get the pass.
+          Kritika: pick up the lens and drag it, then switch to 3D. Prisha: try booking the same bay from a second (private)
+          window to show it gets refused. Esc or the yellow button comes back to the slides. If the server isn't running,
+          start it with: cd backend, python server.py.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 11 -->
+      <section class="slide s-stack" data-trans="wipe" data-tag="Working prototype|Effort &amp; build quality" data-name="Tech stack">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">10</span><span class="bar"></span><span>Tech stack</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">What it's built with.</h2>
+        </div>
+        <div class="stack" data-a="stagger" data-d="0.4" data-s="0.1">
+          <div class="row">
+            <span class="mono k">Languages</span>
+            <div class="chips"><span class="chip is-sun"><b>JavaScript</b></span><span class="chip is-sun"><b>Python</b></span><span class="chip"><b>HTML</b></span><span class="chip"><b>CSS</b></span><span class="chip"><b>SQL</b></span></div>
+          </div>
+          <div class="row">
+            <span class="mono k">Frontend</span>
+            <div class="chips"><span class="chip"><b>React 19</b> <small>live map &amp; panel</small></span><span class="chip"><b>Vite 8</b> <small>build</small></span><span class="chip"><b>Motion</b> <small>animation</small></span><span class="chip"><b>Lenis</b> <small>smooth scroll</small></span><span class="chip"><b>SVG</b> <small>the plan, by hand</small></span></div>
+          </div>
+          <div class="row">
+            <span class="mono k">Backend</span>
+            <div class="chips"><span class="chip"><b>Python 3</b> <small>standard library only</small></span><span class="chip"><b>http.server</b></span><span class="chip"><b>sqlite3</b></span><span class="chip"><b>threading</b></span><span class="chip"><b>Server-Sent Events</b> <small>live push</small></span></div>
+          </div>
+          <div class="row">
+            <span class="mono k">Design</span>
+            <div class="chips"><span class="chip"><b>Bricolage Grotesque</b></span><span class="chip"><b>Space Grotesk</b></span><span class="chip"><b>IBM Plex Mono</b></span><span class="chip"><b>Caveat</b></span><span class="chip"><small>paper · ink · one yellow</small></span></div>
+          </div>
+          <div class="row">
+            <span class="mono k">Tools</span>
+            <div class="chips"><span class="chip"><b>Google Earth</b> <small>lot capture</small></span><span class="chip"><b>Cloudflare Tunnel</b> <small>share link</small></span><span class="chip"><b>Vite dev server</b></span><span class="chip"><b>oxlint</b></span></div>
+          </div>
+        </div>
+        <div class="nums">
+          <div data-a="rise" data-d="0.6"><div class="num"><span data-a="count" data-to="7400" data-d="0.7" data-sep="1">0</span></div><p class="body">lines of frontend code</p></div>
+          <div data-a="rise" data-d="0.75"><div class="num"><span data-a="count" data-to="1121" data-d="0.85" data-sep="1">0</span></div><p class="body">lines of Python, in one file</p></div>
+          <div data-a="rise" data-d="0.9"><div class="num sun"><span data-a="count" data-to="0" data-d="1">0</span></div><p class="body">pip installs for the backend</p></div>
+        </div>
+        <aside class="notes">
+          Effort and build quality. The frontend is plain HTML, CSS and JavaScript, with React only for the live map and the
+          booking panel. The backend is one Python file using only the standard library: no pip install, it just runs.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 12 -->
+      <section class="slide s-arch dots dots-fade" data-trans="flood" data-tag="Working prototype|Effort &amp; build quality" data-name="Architecture">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">11</span><span class="bar"></span><span>Architecture</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">How a booking travels.</h2>
+        </div>
+        <div class="arch" data-scene="arch">
+          <svg viewBox="0 0 1680 590" preserveAspectRatio="none">
+            <path id="w-req" class="wire" d="M420 150 C 560 150, 560 150, 690 150" />
+            <path id="w-db" class="wire" d="M1010 150 C 1130 150, 1130 150, 1240 150" />
+            <path id="w-sse1" class="wire sse" d="M690 300 C 560 300, 560 150, 420 150" />
+            <path id="w-sse2" class="wire sse" d="M690 330 C 560 330, 560 440, 420 440" />
+            <text x="460" y="128" class="wl">POST /api/bookings</text>
+            <text x="1040" y="128" class="wl">INSERT · one locked step</text>
+            <text x="452" y="285" class="wl y">live push (SSE)</text>
+            <text x="452" y="402" class="wl y">same push, every viewer</text>
+          </svg>
+          <div class="node card" style="left: 0; top: 60px; width: 420px" data-a="rise" data-d="0.3">
+            <span class="mono-s">Browser</span>
+            <h3>Your phone</h3>
+            <p>Live plan, lens, panel. Taps a free bay and books it.</p>
+          </div>
+          <div class="node card" style="left: 0; top: 360px; width: 420px" data-a="rise" data-d="0.45">
+            <span class="mono-s">Browser</span>
+            <h3>A friend's laptop</h3>
+            <p>Sees that bay turn booked the moment it happens.</p>
+          </div>
+          <div class="node card" style="left: 690px; top: 60px; width: 320px; height: 330px" data-a="rise" data-d="0.6">
+            <span class="mono-s">server.py</span>
+            <h3>Python server</h3>
+            <p>Checks the rules, saves the booking, tells every open page. Also runs demo cars so the lot looks alive.</p>
+          </div>
+          <div class="node card db" style="left: 1240px; top: 60px; width: 440px" data-a="rise" data-d="0.75">
+            <span class="mono-s">parkseat.db</span>
+            <h3>SQLite</h3>
+            <p>Bookings and the live feed. A trigger refuses any two bookings that overlap on one bay.</p>
+          </div>
+          <div class="node" style="left: 690px; top: 440px; width: 990px; padding: 0" data-a="rise" data-d="1">
+            <p class="mono"><span class="stepnum">1</span>tap a bay  →  <span class="stepnum">2</span>POST the booking  →  <span class="stepnum">3</span>save, or refuse a clash (409)  →  <span class="stepnum">4</span>push to every screen</p>
+          </div>
+        </div>
+        <aside class="notes">
+          One booking, start to end. The phone sends the booking to our Python server. The server checks for a clash and saves
+          it in SQLite in one locked step. Then it pushes the change to every open page over Server-Sent Events, so a friend's
+          screen updates without refreshing.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 13 -->
+      <section class="slide s-hood" data-theme="dark" data-trans="grid" data-tag="Working prototype|Effort &amp; build quality" data-name="Under the hood">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">12</span><span class="bar"></span><span>Under the hood</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Four rules that keep it honest.</h2>
+        </div>
+        <div class="hood" data-a="stagger" data-d="0.4" data-s="0.12">
+          <div class="dec card">
+            <div>
+              <span class="mono-s sun">01 · no double booking</span>
+              <h3>Two cars can never get one bay.</h3>
+              <p>Checked inside a locked transaction, and again by a database trigger.</p>
+            </div>
+<pre class="code"><span class="c"># two windows overlap when</span>
+<span class="k">if</span> a.start &lt; b.end <span class="k">and</span> b.start &lt; a.end:
+    <span class="k">raise</span> ApiError(<span class="n">409</span>, <span class="s">"overlap"</span>)</pre>
+          </div>
+          <div class="dec card">
+            <div>
+              <span class="mono-s sun">02 · status from time</span>
+              <h3>Every bay knows what it is.</h3>
+              <p>Worked out from the clock and the day's bookings, never typed in by hand.</p>
+            </div>
+<pre class="code">free      <span class="c">nothing booked now</span>
+booked    <span class="c">a car is in it</span>
+ending    <span class="c">due out in ≤ <span class="n">20</span> min</span>
+reserved  <span class="c">due in within <span class="n">30</span> min</span>
+yours     <span class="c">booked from this device</span></pre>
+          </div>
+          <div class="dec card">
+            <div>
+              <span class="mono-s sun">03 · live without refresh</span>
+              <h3>Every screen updates at once.</h3>
+              <p>One open connection per page. If it drops, the page reconnects and catches up.</p>
+            </div>
+<pre class="code"><span class="k">Content-Type</span>: text/event-stream
+
+<span class="k">event</span>: change
+<span class="k">data</span>: {<span class="s">"booking"</span>: {<span class="s">"bayId"</span>: <span class="s">"A-07"</span>, …}}</pre>
+          </div>
+          <div class="dec card">
+            <div>
+              <span class="mono-s sun">04 · private by default</span>
+              <h3>No sign-up. No plates on show.</h3>
+              <p>A random device ID marks your bookings, and only its hash is stored.</p>
+            </div>
+<pre class="code">owner = sha256(device_id)
+
+<span class="c"># other people's plates</span>
+<span class="s">"UP14 AB 4821"</span>  →  <span class="s">"UP14 •• 4821"</span></pre>
+          </div>
+        </div>
+        <aside class="notes">
+          Four engineering decisions. One: double booking is impossible, checked twice, in the code and in the database. Two:
+          a bay's status is computed from time, so it's always right. Three: Server-Sent Events push changes to every screen.
+          Four: no accounts, and other people's number plates are masked.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 14 -->
+      <section class="slide s-impact" data-trans="drive" data-tag="Impact value|Relevance to society, environment &amp; SDGs" data-name="Impact">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">13</span><span class="bar"></span><span>Impact</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Less circling, cleaner air.</h2>
+        </div>
+        <div class="sdgs" data-a="stagger" data-d="0.4" data-s="0.12">
+          <div class="sdg card">
+            <div class="top"><span class="num">11</span><span>SDG</span></div>
+            <h3>Sustainable cities and communities</h3>
+            <p>Less traffic crawling round the lot and the gate, and a fair, first-booked system instead of first-lucky.</p>
+          </div>
+          <div class="sdg card">
+            <div class="top"><span class="num">13</span><span>SDG</span></div>
+            <h3>Climate action</h3>
+            <p>Every lap you don't drive is fuel you don't burn. A booked bay means one straight drive in.</p>
+          </div>
+          <div class="sdg card">
+            <div class="top"><span class="num">9</span><span>SDG</span></div>
+            <h3>Industry, innovation and infrastructure</h3>
+            <p>Gets more out of the lot that already exists: no new concrete, just a better way to use it.</p>
+          </div>
+        </div>
+        <div class="estimate" data-a="rise" data-d="1">
+          <div class="num"><span data-a="count" data-to="500" data-d="1.1">0</span></div>
+          <p class="lede" style="font-size: 30px">engine-minutes saved a day, on one lot, if 100 drivers each skip 5 minutes of circling.</p>
+          <span class="mono-s">illustrative estimate</span>
+        </div>
+        <aside class="notes">
+          Impact. Three SDGs: 11, 13 and 9. The number at the bottom is an illustration, not a measurement: if 100 drivers a day
+          each save five minutes of circling, that's 500 minutes of engines not idling, on just one lot. Step-free bays are
+          also marked, so people who need them can book them.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 15 -->
+      <section class="slide s-scale" data-trans="lens" data-tag="Impact value|Potential to inspire change" data-name="Scale">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">14</span><span class="bar"></span><span>Where it goes next</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">One lot today. Every lot after.</h2>
+        </div>
+        <div class="scale" data-a="stagger" data-d="0.4" data-s="0.12">
+          <div class="col card">
+            <span class="mono-s sun">Same method, any lot</span>
+            <h3>Trace it once, book it every day.</h3>
+            <p class="body" style="font-size: 21px; margin-bottom: 22px">Adding a lot means drawing its rows on a satellite photo, like we did for KIET.</p>
+            <div class="chips"><span class="chip">Campuses</span><span class="chip">Hospitals</span><span class="chip">Malls</span><span class="chip">Metro stations</span><span class="chip">Offices</span><span class="chip">Events</span></div>
+          </div>
+          <div class="col card">
+            <span class="mono-s sun">How it pays for itself</span>
+            <h3>Small fees, real data.</h3>
+            <div class="money">
+              <div><b>8%</b><span>commission on each booking</span></div>
+              <div><b>Partners</b><span>campuses and parking providers</span></div>
+              <div><b>Plans</b><span>subscriptions for lot operators</span></div>
+            </div>
+          </div>
+          <div class="col card">
+            <span class="mono-s sun">Roadmap</span>
+            <h3>What we build next.</h3>
+            <div class="road-map">
+              <div class="ms now"><span class="mono-s">Now</span><p>Live plan, booking, pass, lens and 3D on the KIET main lot.</p></div>
+              <div class="ms"><span class="mono-s">Next</span><p>UPI payments, QR check-in at the gate, more KIET lots.</p></div>
+              <div class="ms"><span class="mono-s">Later</span><p>Cameras or sensors for occupancy, and demand forecasts so lots can plan ahead.</p></div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Potential to inspire change. The method works for any lot: trace it once and it's bookable. It can pay for itself
+          with a small commission and operator plans. Next is UPI and QR check-in; later, sensors and demand forecasting.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 16 -->
+      <section class="slide s-team" data-trans="flood" data-tag="Presentation &amp; teamwork|Team coordination" data-name="Team">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">15</span><span class="bar"></span><span data-team>Team Arrivo</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Who built what.</h2>
+        </div>
+        <div class="team" data-team-grid data-a="stagger" data-d="0.4" data-s="0.1"></div>
+        <div class="note" data-a="fade" data-d="1.4"><span class="hand">each of us can demo it.</span></div>
+        <aside class="notes">
+          Each member says one line about their part. This is where the judges see that everyone can explain a piece of it.
+        </aside>
+      </section>
+
+      <!-- =============================================================== 17 -->
+      <section class="slide s-turn dots" data-theme="dark" data-trans="wipe" data-tag="Query addressing|Answers to judges' questions" data-name="Your turn">
+        <i class="g gh" style="top: 412px" data-a="line" data-d="0.2"></i>
+        <i class="g gh" style="top: 528px" data-a="line" data-d="0.3"></i>
+        <i class="g gv" style="left: 790px" data-vline data-d="0.35"></i>
+        <i class="g gv" style="left: 1130px" data-vline data-d="0.45"></i>
+        <div class="center">
+          <div class="box" data-a="pop" data-d="0.6">
+            <span class="h" style="left: -8px; top: -8px"></span>
+            <span class="h" style="right: -8px; top: -8px"></span>
+            <span class="h" style="left: -8px; bottom: -8px"></span>
+            <span class="h" style="right: -8px; bottom: -8px"></span>
+            <span class="btn">Book a bay<span class="i"><svg width="22" height="22" viewBox="0 0 16 16" fill="none"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            <span class="mono-s meas">Button · 308 × 92</span>
+          </div>
+          <div class="note" data-a="fade" data-d="1.2"><span class="hand">go on, ask us anything.</span></div>
+        </div>
+        <div class="bottom">
+          <div>
+            <div class="kicker" data-a="scramble" data-d="0.3"><span class="n">16</span><span class="bar"></span><span>Thank you</span></div>
+            <h2 class="title-xl" data-a="words" data-d="0.4" style="margin-top: 20px">Your turn.</h2>
+          </div>
+          <div style="text-align: right" data-a="rise" data-d="0.9">
+            <div class="wordmark" style="font-size: 54px">arrivo<i></i></div>
+            <p class="mono" style="margin-top: 14px"><span data-team>Team Arrivo</span> · INNOTECH'26 · Category 6</p>
+          </div>
+        </div>
+        <aside class="notes">Thank the judges and open for questions. If they ask for a demo, press L again on slide 10.</aside>
+      </section>
+
+      <!-- =============================================================== 18 -->
+      <section class="slide s-qa" data-trans="grid" data-tag="Query addressing|Answers to judges' questions" data-name="Questions">
+        <div class="head">
+          <div class="kicker" data-a="scramble"><span class="n">A</span><span class="bar"></span><span>Appendix</span></div>
+          <h2 class="title" data-a="words" data-d="0.15" style="margin-top: 26px">Questions we expect.</h2>
+        </div>
+        <div class="qa" data-a="stagger" data-d="0.4" data-s="0.07">
+          <div class="q"><h3><span>Q1</span>What if someone books and never comes?</h3><p>The bay waits 15 minutes past their arrival time, then opens up for anyone.</p></div>
+          <div class="q"><h3><span>Q5</span>Why not just use Google Maps?</h3><p>Maps tells you a lot exists. Arrivo tells you which bay is free, and holds it for you.</p></div>
+          <div class="q"><h3><span>Q2</span>How do you know a bay is really empty?</h3><p>Today, from bookings. Next, a QR check-in at the gate; later, cameras or sensors.</p></div>
+          <div class="q"><h3><span>Q6</span>How does it make money?</h3><p>A small commission per booking, plus subscription plans for lot operators.</p></div>
+          <div class="q"><h3><span>Q3</span>Can two people book the same bay?</h3><p>No. The server checks inside a locked step, and the database has a rule that refuses overlaps.</p></div>
+          <div class="q"><h3><span>Q7</span>Do I need to install an app?</h3><p>No. It's a website that works in any phone browser. The server is one Python file.</p></div>
+          <div class="q"><h3><span>Q4</span>What about privacy?</h3><p>No sign-up. A random device ID, stored only as a hash, and other people's plates are masked.</p></div>
+          <div class="q"><h3><span>Q8</span>What did you find hardest?</h3><p>Making the plan match the real lot, and keeping every screen in sync without refreshing.</p></div>
+        </div>
+        <aside class="notes">Backup slide for the Q&amp;A round. Don't present it; jump here with End if a question comes up.</aside>
+      </section>
+
+      <div id="fx"></div>
+      <div id="chrome" class="chrome">
+        <div class="top">
+          <span class="wordmark">arrivo<i data-logo-dot></i></span>
+          <span class="event">INNOTECH'26 · Cat 6</span>
+          <span class="tag" data-tag-pill></span>
+          <span class="count" data-count></span>
+        </div>
+        <div class="ruler" data-bottom-ruler><span class="dot"><em data-dot-label></em></span></div>
+      </div>
+    </div>
+
+    <div id="notes"><b>Speaker notes · N to hide</b><span data-notes-text></span></div>
+    <div id="help">→ next · ← back · F fullscreen · N notes · L live demo</div>
+    <div id="live">
+      <div class="bar">
+        <span>Live demo · <span data-live-url></span></span>
+        <button data-close-live>Back to slides (Esc)</button>
+      </div>
+      <iframe title="Arrivo live" data-live-frame></iframe>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/vendor/SplitText.min.js"></script>
+    <script src="assets/vendor/DrawSVGPlugin.min.js"></script>
+    <script src="assets/vendor/CustomEase.min.js"></script>
+    <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
+    <script src="assets/vendor/MotionPathPlugin.min.js"></script>
+    <script src="assets/deck.js"></script>
+  </body>
+</html>

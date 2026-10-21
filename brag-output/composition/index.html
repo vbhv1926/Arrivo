@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Arrivo · brag</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: 'Bricolage Grotesque';
+        src: url('assets/fonts/bricolage-grotesque-latin-wght-normal.woff2') format('woff2-variations');
+        font-weight: 200 800;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Space Grotesk';
+        src: url('assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'Space Grotesk';
+        src: url('assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2');
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: 'Space Grotesk';
+        src: url('assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2');
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: 'IBM Plex Mono';
+        src: url('assets/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'IBM Plex Mono';
+        src: url('assets/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+        font-weight: 500;
+      }
+
+      :root {
+        --paper: #f4f4f1;
+        --ink: #121214;
+        --sun: #ffd75a;
+        --sun-line: #d9a91a;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--paper);
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Space Grotesk', system-ui, sans-serif;
+        color: var(--ink);
+      }
+      #bg {
+        position: absolute;
+        inset: 0;
+        background: var(--paper);
+      }
+      .inner {
+        position: absolute;
+        inset: 0;
+      }
+      .cam {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        transform-origin: 0 0;
+      }
+      .shot {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        display: block;
+      }
+      .layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .wipe {
+        clip-path: circle(0px at 1509px 38px);
+      }
+      .hidden0 {
+        opacity: 0;
+      }
+
+      /* ---------- hero ---------- */
+      #seat-pop,
+      #seat-ring {
+        position: absolute;
+        left: 486.25px;
+        top: 205.78px;
+        width: 28.31px;
+        height: 47.19px;
+        border-radius: 7px 7px 3px 3px;
+        opacity: 0;
+      }
+      #seat-pop {
+        background: var(--sun);
+        box-shadow: inset 0 0 0 1.2px var(--ink);
+      }
+      #seat-ring {
+        box-shadow: 0 0 0 2.5px var(--sun-line);
+      }
+
+      /* ---------- lot title ---------- */
+      #lot-scrim {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 470px;
+        background: linear-gradient(to top, rgba(6, 6, 8, 0.95) 0%, rgba(6, 6, 8, 0.78) 42%, rgba(6, 6, 8, 0) 100%);
+        opacity: 0;
+      }
+      #lot-title {
+        position: absolute;
+        left: 112px;
+        bottom: 92px;
+        margin: 0;
+        width: 1300px;
+        font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 104px;
+        line-height: 0.96;
+        letter-spacing: -0.045em;
+        color: #f0f0f3;
+      }
+      .mask {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: top;
+        padding-bottom: 0.1em;
+        margin-bottom: -0.1em;
+      }
+      .w {
+        display: inline-block;
+      }
+
+      /* ---------- lens ---------- */
+      #rig {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0;
+        --cx: 398.07;
+        --cy: 644.55;
+      }
+      .lens-pos {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 160px;
+        height: 160px;
+        transform: translate(calc(var(--cx) * 1px - 80px), calc(var(--cy) * 1px - 80px));
+      }
+      #lens-body {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 160px;
+        height: 160px;
+      }
+      .lens-glass {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 160px;
+        height: 160px;
+        z-index: 1;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--paper);
+        box-shadow:
+          0 0 0 5px #19191b,
+          0 0 0 6.5px rgba(255, 255, 255, 0.3),
+          0 30px 54px -14px rgba(0, 0, 0, 0.55);
+      }
+      .lens-x {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1758.35px;
+        height: 1285.66px;
+        max-width: none;
+        transform: translate(calc((80 - 2.2 * (var(--cx) - 319)) * 1px), calc((80 - 2.2 * (var(--cy) - 118.59)) * 1px));
+      }
+      .lens-glare {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 38%),
+          radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0.14) 100%);
+      }
+      .lens-cross {
+        position: absolute;
+        left: 69px;
+        top: 69px;
+        width: 22px;
+        height: 22px;
+      }
+      .lens-cross::before,
+      .lens-cross::after {
+        content: '';
+        position: absolute;
+        background: rgba(18, 18, 20, 0.55);
+      }
+      .lens-cross::before {
+        left: 0;
+        right: 0;
+        top: 10.5px;
+        height: 1px;
+      }
+      .lens-cross::after {
+        top: 0;
+        bottom: 0;
+        left: 10.5px;
+        width: 1px;
+      }
+      .lens-handle {
+        position: absolute;
+        left: 69px;
+        top: 80px;
+        width: 22px;
+        height: 92px;
+        border-radius: 11px;
+        transform-origin: 50% 0;
+        transform: rotate(-45deg) translateY(78px);
+        background: linear-gradient(90deg, #333338, #121214 55%, #222226);
+        box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.5);
+      }
+      .lens-handle b {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 12px;
+        height: 7px;
+        background: var(--sun);
+      }
+
+      .ro-pos {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translate(calc((var(--cx) - 384) * 1px), calc((var(--cy) - 54) * 1px));
+      }
+      #ro-card {
+        width: 290px;
+        box-sizing: border-box;
+        padding: 16px 18px 14px;
+        border-radius: 16px;
+        background: #121214;
+        color: #f4f4f1;
+        box-shadow: 0 24px 46px -18px rgba(0, 0, 0, 0.55);
+        opacity: 0;
+        transform-origin: 100% 50%;
+      }
+      .ro-top {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 19px;
+        font-weight: 500;
+      }
+      .ro-top b {
+        font-family: 'IBM Plex Mono', monospace;
+        font-weight: 500;
+      }
+      .ro-sub {
+        margin-top: 6px;
+        font-size: 14.5px;
+        line-height: 1.35;
+        color: #c2c2c7;
+      }
+      .ro-counts {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-top: 12px;
+        padding-top: 11px;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 14px;
+        color: #f4f4f1;
+      }
+      .ro-counts .lbl {
+        margin-right: auto;
+        font-size: 11.5px;
+        letter-spacing: 0.08em;
+        color: #9a9aa1;
+      }
+      .ro-counts span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .ro-hint {
+        margin-top: 9px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px;
+        color: var(--sun);
+      }
+      .dt {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .dt-free {
+        background: var(--sun);
+      }
+      .dt-taken {
+        background: #6b6b72;
+      }
+      .dt-ending {
+        background: #6b6b72;
+        box-shadow: 0 0 0 2px var(--sun);
+      }
+      .dt-held {
+        background: repeating-linear-gradient(-45deg, #c9c9c4 0 1.5px, transparent 1.5px 3.5px);
+        box-shadow: inset 0 0 0 1px #c9c9c4;
+      }
+
+      /* ---------- typing ---------- */
+      #typing {
+        position: absolute;
+        left: 1190.25px;
+        top: 660.03px;
+        width: 396.75px;
+        height: 46px;
+        border-radius: 10px;
+        background: #fdfdfb;
+        opacity: 0;
+      }
+      #typed {
+        position: absolute;
+        left: 15px;
+        top: 11.75px;
+        margin: 0;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 15px;
+        line-height: 22.5px;
+        letter-spacing: 0.9px;
+        color: #121214;
+        white-space: pre;
+      }
+      #typed .ch {
+        opacity: 0;
+      }
+      #caret {
+        position: absolute;
+        left: 15px;
+        top: 13.75px;
+        width: 1.6px;
+        height: 19px;
+        background: #121214;
+      }
+
+      /* ---------- hold bar + ticket ---------- */
+      #holdbar {
+        position: absolute;
+        left: 1188.25px;
+        top: 910.03px;
+        width: 400.75px;
+        height: 10px;
+        background: #f8f8f6;
+        opacity: 0;
+      }
+      #hb-track,
+      #hb-fill {
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 400.75px;
+        height: 2px;
+        border-radius: 2px;
+      }
+      #hb-track {
+        background: rgba(18, 18, 20, 0.12);
+      }
+      #hb-fill {
+        background: #121214;
+        transform-origin: 0 50%;
+      }
+      #t-card {
+        position: absolute;
+        left: 1188.25px;
+        top: 329.23px;
+        width: 400.75px;
+        height: 347.38px;
+        border-radius: 18px;
+        background-image: url('assets/shots/ticket_light.jpg');
+        background-size: 1920px 1080px;
+        background-position: -1188.25px -329.23px;
+        box-shadow:
+          0 0 0 1px rgba(18, 18, 20, 0.12),
+          0 30px 50px -26px rgba(0, 0, 0, 0.45);
+        opacity: 0;
+      }
+
+      /* ---------- list ---------- */
+      #list-inner {
+        --s: 106;
+        transform-origin: 50% 50%;
+      }
+      .lcam {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 2160px;
+      }
+      .lcam img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 2160px;
+        display: block;
+      }
+      #list-dark-mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        clip-path: polygon(calc(var(--s) * 1% + 6%) 0, 100% 0, 100% 100%, calc(var(--s) * 1% - 6%) 100%);
+      }
+      #divider {
+        position: absolute;
+        top: -30px;
+        left: calc(var(--s) * 1%);
+        width: 4px;
+        height: 1140px;
+        margin-left: -2px;
+        transform: rotate(12.04deg);
+        transform-origin: 50% 50%;
+        background: var(--sun);
+        box-shadow:
+          0 0 0 1px rgba(18, 18, 20, 0.25),
+          0 0 26px rgba(255, 215, 90, 0.65);
+      }
+      .tag {
+        position: absolute;
+        bottom: 66px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 28px;
+        border-radius: 999px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        opacity: 0;
+      }
+      .tag i {
+        display: block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--sun);
+      }
+      .tag-light {
+        left: 96px;
+        background: #121214;
+        color: #f4f4f1;
+      }
+      .tag-dark {
+        right: 96px;
+        background: #f0f0f3;
+        color: #121214;
+      }
+
+      /* ---------- outro ---------- */
+      #o-inner {
+        background: var(--paper);
+        opacity: 0;
+      }
+      .o-dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(18, 18, 20, 0.16) 1.3px, transparent 1.3px);
+        background-size: 24px 24px;
+        -webkit-mask-image: radial-gradient(ellipse at 50% 46%, #000 20%, transparent 72%);
+        mask-image: radial-gradient(ellipse at 50% 46%, #000 20%, transparent 72%);
+      }
+      #o-glow {
+        position: absolute;
+        left: 410px;
+        top: 150px;
+        width: 1100px;
+        height: 620px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(255, 215, 90, 0.62), rgba(255, 215, 90, 0));
+        opacity: 0.55;
+      }
+      #o-stack {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 40px;
+        box-sizing: border-box;
+      }
+      .wordmark {
+        display: flex;
+        align-items: baseline;
+        font-family: 'Space Grotesk', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 300px;
+        line-height: 1;
+        letter-spacing: -0.045em;
+        color: #121214;
+      }
+      .lt-mask {
+        display: inline-block;
+        overflow: hidden;
+        padding: 0 0.01em 0.12em;
+        margin-bottom: -0.12em;
+      }
+      .lt {
+        display: inline-block;
+      }
+      #o-dot {
+        display: inline-block;
+        width: 0.27em;
+        height: 0.27em;
+        margin-left: 0.04em;
+        border-radius: 50%;
+        background: var(--sun);
+        box-shadow: inset 0 0 0 0.03em rgba(138, 100, 0, 0.35);
+      }
+      .o-tag {
+        margin: 26px 0 0;
+        font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 80px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: #121214;
+      }
+      .o-loc {
+        margin: 30px 0 0;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 28px;
+        letter-spacing: 0.04em;
+        color: #55555c;
+        opacity: 0;
+      }
+
+      /* ---------- cursor + ripples ---------- */
+      #cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        z-index: 3;
+      }
+      #cur-in {
+        position: absolute;
+        left: -4px;
+        top: -3px;
+        width: 40px;
+        height: 46px;
+        transform-origin: 4px 3px;
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+      }
+      .ripple {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 1px;
+        z-index: 2;
+      }
+      .ripple i {
+        position: absolute;
+        left: -30px;
+        top: -30px;
+        width: 60px;
+        height: 60px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 3.5px solid var(--sun);
+        box-shadow:
+          0 0 0 1.5px rgba(18, 18, 20, 0.35),
+          inset 0 0 0 1.5px rgba(18, 18, 20, 0.2);
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-mxyv"
+      id="root"
+      data-composition-id="arrivo-brag"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="24.6"
+      data-fps="30"
+    >
+      <div data-hf-id="hf-2xc0" id="bg"></div>
+
+      <!-- 1-2 · hero: seat pick, then lights off -->
+      <section data-hf-id="hf-eip1" id="s-hero" class="clip" data-start="0" data-duration="5.85" data-track-index="1">
+        <div data-hf-id="hf-hhk8" class="inner" id="hero-inner" data-layout-allow-overflow>
+          <div data-hf-id="hf-tjwc" class="cam" id="hero-cam" data-layout-allow-overflow>
+            <img data-hf-id="hf-9wm3" class="shot" src="assets/shots/hero_light.jpg" alt="Arrivo hero, light theme" />
+            <div data-hf-id="hf-7pxn" class="layer wipe" id="hero-dark">
+              <img data-hf-id="hf-ex0j" class="shot" src="assets/shots/hero_dark.jpg" alt="Arrivo hero, dark theme" />
+            </div>
+            <div data-hf-id="hf-xfs5" id="seat-ring"></div>
+            <div data-hf-id="hf-sqt0" id="seat-pop"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-5 · the live lot: 3D, lens, booking, bay pass (one continuous page) -->
+      <section data-hf-id="hf-94zl" id="s-lot" class="clip" data-start="5.2" data-duration="13.76" data-track-index="2">
+        <div data-hf-id="hf-7oav" class="inner" id="lot-inner" data-layout-allow-overflow>
+          <div data-hf-id="hf-2tht" class="cam" id="lot-cam" data-layout-allow-overflow>
+            <img data-hf-id="hf-nora" class="shot" id="m-dark" src="assets/shots/map_dark.jpg" alt="Live lot, dark" />
+            <img data-hf-id="hf-mi1b" class="shot hidden0" id="m-dark3d" src="assets/shots/map_dark_3d.jpg" alt="Live lot in 3D, dark" />
+            <div data-hf-id="hf-sxqu" class="layer wipe" id="light">
+              <img data-hf-id="hf-a4wc" class="shot" id="m-nolens" src="assets/shots/map_light_nolens.jpg" alt="" />
+              <img data-hf-id="hf-0vca" class="shot" id="m-light" src="assets/shots/map_light.jpg" alt="Live lot, light" />
+              <img data-hf-id="hf-fofh" class="shot hidden0" id="m-sel-nolens" src="assets/shots/map_light_selected_nolens.jpg" alt="" />
+              <img data-hf-id="hf-2zwn" class="shot hidden0" id="m-sel" src="assets/shots/map_light_selected.jpg" alt="Bay C-10 selected" />
+              <img data-hf-id="hf-h8fr" class="shot hidden0" id="p-stay" src="assets/shots/panel_stay.jpg" alt="Three hours chosen" />
+              <img data-hf-id="hf-jo60" class="shot hidden0" id="p-focus" src="assets/shots/panel_focus.jpg" alt="" />
+              <div data-hf-id="hf-k5uo" id="typing">
+                <p data-hf-id="hf-5x8s" id="typed"><span data-hf-id="hf-64hs" class="ch" id="ch0">U</span><span data-hf-id="hf-9x04" class="ch" id="ch1">P</span><span data-hf-id="hf-oz76" class="ch" id="ch2">1</span><span data-hf-id="hf-evg6" class="ch" id="ch3">4</span><span data-hf-id="hf-cdm9" class="ch" id="ch4"> </span><span data-hf-id="hf-pkn8" class="ch" id="ch5">D</span><span data-hf-id="hf-q30x" class="ch" id="ch6">X</span><span data-hf-id="hf-gbqa" class="ch" id="ch7"> </span><span data-hf-id="hf-ll8r" class="ch" id="ch8">4</span><span data-hf-id="hf-zbes" class="ch" id="ch9">8</span><span data-hf-id="hf-smbe" class="ch" id="ch10">2</span><span data-hf-id="hf-jz7w" class="ch" id="ch11">1</span></p>
+                <div data-hf-id="hf-8b3u" id="caret"></div>
+              </div>
+              <img data-hf-id="hf-uulk" class="shot hidden0" id="p-typed" src="assets/shots/panel_typed.jpg" alt="" />
+              <img data-hf-id="hf-5nye" class="shot hidden0" id="p-holding" src="assets/shots/panel_holding.jpg" alt="" />
+              <div data-hf-id="hf-biz1" id="holdbar"><div data-hf-id="hf-daj1" id="hb-track"></div><div data-hf-id="hf-v4h7" id="hb-fill"></div></div>
+              <img data-hf-id="hf-zhj5" class="shot hidden0" id="t-nocard" src="assets/shots/ticket_nocard.jpg" alt="Held for you" />
+              <div data-hf-id="hf-xuoe" id="t-card"></div>
+              <div data-hf-id="hf-jy91" id="rig">
+                <div data-hf-id="hf-awld" class="lens-pos">
+                  <div data-hf-id="hf-ty9y" id="lens-body">
+                    <span data-hf-id="hf-37wg" class="lens-handle"><b data-hf-id="hf-xujp"></b></span>
+                    <div data-hf-id="hf-5p4b" class="lens-glass">
+                      <img data-hf-id="hf-84rg" class="lens-x" src="assets/shots/xray_light.jpg" alt="" />
+                      <span data-hf-id="hf-mxmv" class="lens-glare"></span>
+                      <span data-hf-id="hf-6eka" class="lens-cross"></span>
+                    </div>
+                  </div>
+                </div>
+                <div data-hf-id="hf-cn0w" class="ro-pos">
+                  <div data-hf-id="hf-vhtf" id="ro-card">
+                    <div data-hf-id="hf-t80n" class="ro-top"><b data-hf-id="hf-gy98">C-10</b><i data-hf-id="hf-umwb" class="dt dt-free"></i><span data-hf-id="hf-yh5b">Free</span></div>
+                    <div data-hf-id="hf-vemc" class="ro-sub">free till 20:55 · Standard · ₹20/h</div>
+                    <div data-hf-id="hf-fg8a" class="ro-counts">
+                      <span data-hf-id="hf-d7nf" class="lbl">IN THE LENS</span>
+                      <span data-hf-id="hf-ikog"><i data-hf-id="hf-lutn" class="dt dt-free"></i>1</span>
+                      <span data-hf-id="hf-hs2e"><i data-hf-id="hf-c712" class="dt dt-taken"></i>3</span>
+                      <span data-hf-id="hf-i6df"><i data-hf-id="hf-4108" class="dt dt-ending"></i>0</span>
+                      <span data-hf-id="hf-cy6g"><i data-hf-id="hf-k3h8" class="dt dt-held"></i>1</span>
+                    </div>
+                    <div data-hf-id="hf-u7js" class="ro-hint">let go to open C-10</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div data-hf-id="hf-npe3" id="lot-scrim"></div>
+          <h2 data-hf-id="hf-pdig" id="lot-title" aria-label="KIET main lot, right now.">
+            <span data-hf-id="hf-vdsp" class="mask"><span data-hf-id="hf-u4sx" class="w">KIET</span></span>
+            <span data-hf-id="hf-2y5p" class="mask"><span data-hf-id="hf-0wad" class="w">main</span></span>
+            <span data-hf-id="hf-452s" class="mask"><span data-hf-id="hf-9pn5" class="w">lot,</span></span>
+            <span data-hf-id="hf-3qrr" class="mask"><span data-hf-id="hf-n4dm" class="w">right</span></span>
+            <span data-hf-id="hf-4xou" class="mask"><span data-hf-id="hf-ybqi" class="w">now.</span></span>
+          </h2>
+        </div>
+      </section>
+
+      <!-- 6 · every bay, both themes -->
+      <section data-hf-id="hf-2vta" id="s-list" class="clip" data-start="18.96" data-duration="2.98" data-track-index="3">
+        <div data-hf-id="hf-t1m8" class="inner" id="list-inner" data-layout-allow-overflow>
+          <div data-hf-id="hf-bq1g" class="lcam" id="lcam-light" data-layout-allow-overflow>
+            <img data-hf-id="hf-95mr" src="assets/shots/list_light.jpg" alt="All 96 bays, light" />
+          </div>
+          <div data-hf-id="hf-uctn" id="list-dark-mask">
+            <div data-hf-id="hf-xy90" class="lcam" id="lcam-dark" data-layout-allow-overflow>
+              <img data-hf-id="hf-i59n" src="assets/shots/list_dark.jpg" alt="All 96 bays, dark" />
+            </div>
+          </div>
+          <div data-hf-id="hf-scq3" id="divider" data-layout-allow-overflow></div>
+          <div data-hf-id="hf-d1hx" class="tag tag-light"><i data-hf-id="hf-wt6k"></i>Light</div>
+          <div data-hf-id="hf-7oed" class="tag tag-dark"><i data-hf-id="hf-zeb8"></i>Dark</div>
+        </div>
+      </section>
+
+      <!-- 7 · arrivo. -->
+      <section data-hf-id="hf-4o1j" id="s-outro" class="clip" data-start="21.62" data-duration="2.98" data-track-index="4">
+        <div data-hf-id="hf-5lj6" class="inner" id="o-inner">
+          <div data-hf-id="hf-1w4k" class="o-dots"></div>
+          <div data-hf-id="hf-8zzi" id="o-glow"></div>
+          <div data-hf-id="hf-e8oj" id="o-stack">
+            <div data-hf-id="hf-22p1" class="wordmark" aria-label="arrivo.">
+              <span data-hf-id="hf-ro3u" class="lt-mask"><span data-hf-id="hf-i4as" class="lt">a</span></span><span data-hf-id="hf-83v2" class="lt-mask"><span data-hf-id="hf-akh9" class="lt">r</span></span><span data-hf-id="hf-8i63" class="lt-mask"><span data-hf-id="hf-xmn5" class="lt">r</span></span><span data-hf-id="hf-8wh4" class="lt-mask"><span data-hf-id="hf-lar0" class="lt">i</span></span><span data-hf-id="hf-64bx" class="lt-mask"><span data-hf-id="hf-c5pd" class="lt">v</span></span><span data-hf-id="hf-6imy" class="lt-mask"><span data-hf-id="hf-m3d2" class="lt">o</span></span><span data-hf-id="hf-wxp3" id="o-dot"></span>
+            </div>
+            <p data-hf-id="hf-slme" class="o-tag" aria-label="Park like you booked a seat.">
+              <span data-hf-id="hf-4jdt" class="mask"><span data-hf-id="hf-uhr4" class="w">Park</span></span>
+              <span data-hf-id="hf-5qaw" class="mask"><span data-hf-id="hf-8msr" class="w">like</span></span>
+              <span data-hf-id="hf-5bzv" class="mask"><span data-hf-id="hf-wnbn" class="w">you</span></span>
+              <span data-hf-id="hf-6iwy" class="mask"><span data-hf-id="hf-8cus" class="w">booked</span></span>
+              <span data-hf-id="hf-64lx" class="mask"><span data-hf-id="hf-b7a3" class="w">a</span></span>
+              <span data-hf-id="hf-w0h3" class="mask"><span data-hf-id="hf-rgyt" class="w">seat.</span></span>
+            </p>
+            <p data-hf-id="hf-6dm2" class="o-loc">KIET, Ghaziabad · first lot mapped</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- cursor + click ripples, in screen space above every scene -->
+      <div data-hf-id="hf-83a8" id="fx" class="clip" data-start="0" data-duration="18" data-track-index="5">
+        <div data-hf-id="hf-ynrv" class="ripple" id="r1"><i data-hf-id="hf-y7e5"></i></div>
+        <div data-hf-id="hf-pzw0" class="ripple" id="r2"><i data-hf-id="hf-ylp6"></i></div>
+        <div data-hf-id="hf-qrjt" class="ripple" id="r3"><i data-hf-id="hf-0l8b"></i></div>
+        <div data-hf-id="hf-i3ny" class="ripple" id="r4"><i data-hf-id="hf-0zjc"></i></div>
+        <div data-hf-id="hf-m1rz" class="ripple" id="r5"><i data-hf-id="hf-zsm9"></i></div>
+        <div data-hf-id="hf-b6ac" class="ripple" id="r6"><i data-hf-id="hf-06xa"></i></div>
+        <div data-hf-id="hf-bxy5" class="ripple" id="r7"><i data-hf-id="hf-26gf"></i></div>
+        <div data-hf-id="hf-m59e" class="ripple" id="r8"><i data-hf-id="hf-2krg"></i></div>
+        <div data-hf-id="hf-8gdj" id="cursor">
+          <svg data-hf-id="hf-op0a" id="cur-in" viewBox="0 0 40 46" aria-hidden="true">
+            <path data-hf-id="hf-vexv"
+              d="M4 3 L4 35 L12.2 27.4 L17.6 40.2 L23.2 37.8 L17.9 25.3 L29.4 24.8 Z"
+              fill="#121214"
+              stroke="#ffffff"
+              stroke-width="2.6"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- audio: music bed + motion-matched sfx -->
+      <audio data-hf-id="hf-as4x"
+        id="music"
+        src="assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3"
+        data-start="0"
+        data-duration="24.6"
+        data-track-index="10"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.36},{"t":23.4,"v":0.36},{"t":24.55,"v":0}]}]}'
+      ></audio>
+      <audio data-hf-id="hf-lj9b" id="sfx-seat" src="assets/sfx/ui/mouseclick1.ogg" data-start="1.59" data-duration="0.06" data-track-index="11" data-volume="0.8"></audio>
+      <audio data-hf-id="hf-cq2e" id="sfx-pull" src="assets/sfx/casino/card-slide-1.ogg" data-start="1.95" data-duration="0.61" data-track-index="12" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-ij7e" id="sfx-dark" src="assets/sfx/interface/switch_007.ogg" data-start="3.69" data-duration="0.62" data-track-index="13" data-volume="0.8"></audio>
+      <audio data-hf-id="hf-3ug8" id="sfx-whip" src="assets/sfx/casino/card-slide-1.ogg" data-start="5.22" data-duration="0.61" data-track-index="14" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-46fu" id="sfx-land" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="5.79" data-duration="0.19" data-track-index="15" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-xne1" id="sfx-3d" src="assets/sfx/ui/click2.ogg" data-start="6.33" data-duration="0.06" data-track-index="16" data-volume="0.8"></audio>
+      <audio data-hf-id="hf-pbb3" id="sfx-tilt" src="assets/sfx/impact/impactSoft_medium_004.ogg" data-start="6.46" data-duration="0.15" data-track-index="17" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-2es9" id="sfx-light" src="assets/sfx/interface/switch_002.ogg" data-start="8.43" data-duration="0.62" data-track-index="18" data-volume="0.75"></audio>
+      <audio data-hf-id="hf-hs6q" id="sfx-grab" src="assets/sfx/interface/drop_002.ogg" data-start="9.49" data-duration="0.2" data-track-index="19" data-volume="0.8"></audio>
+      <audio data-hf-id="hf-s0gc" id="sfx-readout" src="assets/sfx/ui/rollover2.ogg" data-start="11.32" data-duration="0.06" data-track-index="20" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-thdv" id="sfx-release" src="assets/sfx/interface/click_001.ogg" data-start="12.64" data-duration="0.1" data-track-index="21" data-volume="0.7"></audio>
+      <audio data-hf-id="hf-6rff" id="sfx-3h" src="assets/sfx/ui/mouseclick1.ogg" data-start="13.69" data-duration="0.06" data-track-index="22" data-volume="0.75"></audio>
+      <audio data-hf-id="hf-oc09" id="sfx-field" src="assets/sfx/ui/click2.ogg" data-start="14.21" data-duration="0.06" data-track-index="23" data-volume="0.7"></audio>
+      <audio data-hf-id="hf-0bna" id="key0" src="assets/sfx/keyboard/keypress-003.wav" data-start="14.45" data-duration="0.25" data-track-index="24" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-1kbp" id="key1" src="assets/sfx/keyboard/keypress-011.wav" data-start="14.555" data-duration="0.25" data-track-index="25" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-nhs4" id="key2" src="assets/sfx/keyboard/keypress-020.wav" data-start="14.66" data-duration="0.25" data-track-index="26" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-zc0j" id="key3" src="assets/sfx/keyboard/keypress-005.wav" data-start="14.765" data-duration="0.25" data-track-index="27" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-tien" id="key5" src="assets/sfx/keyboard/keypress-027.wav" data-start="14.975" data-duration="0.25" data-track-index="28" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-6bnl" id="key6" src="assets/sfx/keyboard/keypress-014.wav" data-start="15.08" data-duration="0.25" data-track-index="29" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-monv" id="key8" src="assets/sfx/keyboard/keypress-031.wav" data-start="15.29" data-duration="0.25" data-track-index="30" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-plp3" id="key9" src="assets/sfx/keyboard/keypress-008.wav" data-start="15.395" data-duration="0.25" data-track-index="31" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-8sj6" id="key10" src="assets/sfx/keyboard/keypress-022.wav" data-start="15.5" data-duration="0.25" data-track-index="32" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-o4qi" id="key11" src="assets/sfx/keyboard/keypress-017.wav" data-start="15.605" data-duration="0.25" data-track-index="33" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-4vpc" id="sfx-hold" src="assets/sfx/interface/click_001.ogg" data-start="16.33" data-duration="0.1" data-track-index="34" data-volume="0.8"></audio>
+      <audio data-hf-id="hf-c32y" id="sfx-pass" src="assets/sfx/impact/impactBell_heavy_000.ogg" data-start="17.91" data-duration="1.49" data-track-index="35" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-apnw" id="sfx-split" src="assets/sfx/casino/card-slide-1.ogg" data-start="19.1" data-duration="0.61" data-track-index="36" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-ca34" id="sfx-out" src="assets/sfx/impact/impactSoft_medium_002.ogg" data-start="21.62" data-duration="0.14" data-track-index="37" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-0332" id="sfx-logo" src="assets/sfx/impact/impactBell_heavy_003.ogg" data-start="22.65" data-duration="0.66" data-track-index="38" data-volume="0.65"></audio>
+    </div>
+
+    <script>
+      // ---- bass of the music bed for 21.7–24.6 s (30 fps), pre-extracted with extract-audio-data.py ----
+      const BASS = [0.261,0.277,0.28,0.301,0.238,0.311,0.373,0.373,0.363,0.347,0.333,0.352,0.438,0.426,0.303,0.273,0.27,0.282,0.297,0.287,0.272,0.34,0.373,0.366,0.342,0.332,0.333,0.404,0.529,0.398,0.303,0.276,0.293,0.28,0.297,0.262,0.233,0.306,0.334,0.329,0.323,0.312,0.31,0.38,0.548,0.402,0.328,0.287,0.231,0.285,0.276,0.235,0.201,0.278,0.302,0.306,0.296,0.286,0.278,0.326,0.535,0.372,0.343,0.252,0.232,0.284,0.271,0.201,0.229,0.297,0.296,0.289,0.278,0.267,0.243,0.396,0.467,0.322,0.333,0.239,0.263,0.275,0.256,0.204,0.27,0.312,0.309]
+
+      const tl = gsap.timeline({ paused: true })
+
+      /* ---------- camera math: a pose is a zoom k centred on a page point (fx, fy) ---------- */
+      const P = {
+        H0a: { k: 2.55, fx: 598, fy: 266 },
+        H0b: { k: 2.45, fx: 612, fy: 266 },
+        I: { k: 1, fx: 960, fy: 540 },
+        M1: { k: 1.4, fx: 735, fy: 420 },
+        M2: { k: 1.5, fx: 720, fy: 415 },
+        L1: { k: 1.75, fx: 575, fy: 430 },
+        P1: { k: 1.65, fx: 1338, fy: 700 },
+        T1: { k: 1.5, fx: 1280, fy: 505 },
+      }
+      const cam = (p) => ({ x: 960 - p.k * p.fx, y: 540 - p.k * p.fy, scale: p.k })
+      const camMix = (a, b, u) => {
+        const A = cam(a)
+        const B = cam(b)
+        return { x: A.x + (B.x - A.x) * u, y: A.y + (B.y - A.y) * u, scale: A.scale + (B.scale - A.scale) * u }
+      }
+      const scr = (c, px, py) => ({ x: c.x + c.scale * px, y: c.y + c.scale * py })
+      const at = (p, px, py) => scr(cam(p), px, py)
+
+      // real UI coordinates from the capture (assets/shots/coords.json)
+      const SEAT = [500.41, 229.38]
+      const TOGGLE = { x: 1509, y: 38 }
+      const BTN3D = [402.94, 86.59]
+      const DOCK = [398.07, 644.55]
+      const TARGET = [752.89, 215.71]
+      const CHIP3H = [1313, 593]
+      const FIELD = [1300, 683.03]
+      const HOLD = [1330, 875.03]
+
+      /* ---------- helpers ---------- */
+      const press = (t) => {
+        tl.to('#cur-in', { scale: 0.8, duration: 0.07, ease: 'power2.out' }, t - 0.04)
+        tl.to('#cur-in', { scale: 1, duration: 0.26, ease: 'back.out(3)' }, t + 0.05)
+      }
+      const ripple = (id, p, t) => {
+        tl.set(id, { x: p.x, y: p.y }, 0)
+        tl.fromTo(id + ' i', { scale: 0.25, opacity: 0.95 }, { scale: 1.75, opacity: 0, duration: 0.62, ease: 'power2.out', immediateRender: false }, t)
+      }
+      const words = (sel, t, stagger, dur) =>
+        tl.fromTo(sel, { yPercent: 118 }, { yPercent: 0, duration: dur, ease: 'expo.out', stagger }, t)
+
+      /* ================= 1 · seat pick (0 – 3.18) ================= */
+      tl.set('#hero-cam', { ...cam(P.H0a), transformOrigin: '0 0' }, 0)
+      tl.to('#hero-cam', { ...cam(P.H0b), duration: 1.95, ease: 'none' }, 0)
+      tl.to('#hero-cam', { ...cam(P.I), duration: 0.9, ease: 'expo.inOut' }, 1.95)
+
+      const seatA = scr(camMix(P.H0a, P.H0b, 1.6 / 1.95), ...SEAT)
+      const seatB = at(P.H0b, ...SEAT)
+      tl.set('#cursor', { x: 1600, y: 1180 }, 0)
+      tl.to('#cursor', { opacity: 1, duration: 0.2, ease: 'none' }, 0.3)
+      tl.to(
+        '#cursor',
+        {
+          keyframes: { '0%': { x: 1600, y: 1180 }, '45%': { x: 1060, y: 690 }, '100%': { x: seatA.x, y: seatA.y }, easeEach: 'none' },
+          ease: 'power3.out',
+          duration: 1.15,
+        },
+        0.35,
+      )
+      press(1.6) // beat-locked: 1.60
+      ripple('#r1', seatA, 1.6)
+      tl.fromTo('#seat-pop', { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1.16, duration: 0.18, ease: 'power2.out' }, 1.6)
+      tl.to('#seat-pop', { scale: 1, duration: 0.32, ease: 'back.out(2.2)' }, 1.78)
+      tl.fromTo('#seat-ring', { opacity: 0.95, scale: 1 }, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.out', immediateRender: false }, 1.62)
+      tl.to('#cursor', { x: seatB.x, y: seatB.y, duration: 0.29, ease: 'none' }, 1.66)
+      tl.to('#cursor', { x: SEAT[0], y: SEAT[1], duration: 0.9, ease: 'expo.inOut' }, 1.95)
+
+      /* ================= 2 · lights off (3.18 – 5.28) ================= */
+      tl.to(
+        '#cursor',
+        {
+          keyframes: { '0%': { x: SEAT[0], y: SEAT[1] }, '55%': { x: 1060, y: 120 }, '100%': { x: TOGGLE.x, y: TOGGLE.y }, easeEach: 'none' },
+          ease: 'power3.inOut',
+          duration: 0.67,
+        },
+        2.95,
+      )
+      press(3.7) // beat-locked: 3.70
+      ripple('#r2', TOGGLE, 3.7)
+      tl.to('#hero-dark', { clipPath: 'circle(1900px at 1509px 38px)', duration: 0.75, ease: 'power3.inOut' }, 3.7)
+      tl.to('#cursor', { x: 1440, y: 150, duration: 1.0, ease: 'sine.inOut' }, 4.05)
+
+      /* ================= 3 · the lot, in 3D (5.28 – 8.44) ================= */
+      tl.set('#lot-cam', { ...cam(P.M1), transformOrigin: '0 0' }, 0)
+      tl.set('#lot-inner', { y: 1080 }, 0)
+      // whip: the page scrolls from the hero down to the lot
+      tl.to('#hero-inner', { y: -1080, duration: 0.55, ease: 'expo.inOut' }, 5.25)
+      tl.to('#lot-inner', { y: 0, duration: 0.55, ease: 'expo.inOut' }, 5.25) // lands on the 5.80 beat
+      for (const sel of ['#hero-inner', '#lot-inner']) {
+        tl.to(
+          sel,
+          { keyframes: { '0%': { filter: 'blur(0px)' }, '50%': { filter: 'blur(9px)' }, '100%': { filter: 'blur(0px)' } }, duration: 0.55, ease: 'none' },
+          5.25,
+        )
+      }
+      tl.to('#lot-scrim', { opacity: 1, duration: 0.45, ease: 'power2.out' }, 5.82)
+      words('#lot-title .w', 5.9, 0.06, 0.75)
+      tl.to(['#lot-title', '#lot-scrim'], { opacity: 0, duration: 0.26, ease: 'power2.in' }, 7.62)
+
+      const btn3d = at(P.M1, ...BTN3D)
+      tl.to('#cursor', { x: btn3d.x, y: btn3d.y, duration: 0.72, ease: 'power3.inOut' }, 5.54)
+      press(6.34) // beat: 6.34
+      ripple('#r3', btn3d, 6.34)
+      tl.to('#m-dark3d', { opacity: 1, duration: 0.42, ease: 'power1.inOut' }, 6.36)
+      tl.to('#lot-cam', { ...cam(P.M2), duration: 1.36, ease: 'power2.out' }, 6.34)
+      tl.to('#cursor', { x: 700, y: 190, duration: 0.7, ease: 'sine.inOut' }, 6.6)
+
+      /* ================= 4 · the lens (8.44 – 12.90) ================= */
+      tl.to('#lot-cam', { ...cam(P.I), duration: 0.48, ease: 'expo.inOut' }, 7.85)
+      tl.to('#cursor', { x: TOGGLE.x, y: TOGGLE.y, duration: 0.81, ease: 'power3.inOut' }, 7.55)
+      press(8.44) // beat: 8.44
+      ripple('#r4', TOGGLE, 8.44)
+      tl.to('#light', { clipPath: 'circle(1900px at 1509px 38px)', duration: 0.7, ease: 'power3.inOut' }, 8.44)
+      tl.to('#lot-cam', { ...cam(P.L1), duration: 0.48, ease: 'expo.inOut' }, 8.98)
+
+      const dock = at(P.L1, ...DOCK)
+      tl.to('#cursor', { x: dock.x + 36, y: dock.y + 36, duration: 0.8, ease: 'power3.inOut' }, 8.62)
+
+      // pick the lens up (beat-locked: 9.50)
+      tl.set('#rig', { '--cx': DOCK[0], '--cy': DOCK[1] }, 0)
+      tl.set('#lens-body', { scale: 0.6, transformOrigin: '50% 50%' }, 0)
+      tl.to('#cur-in', { scale: 0.84, duration: 0.08, ease: 'power2.out' }, 9.46)
+      tl.set('#m-light', { opacity: 0 }, 9.5)
+      tl.set('#rig', { opacity: 1 }, 9.5)
+      tl.to('#lens-body', { scale: 1, duration: 0.4, ease: 'back.out(1.6)' }, 9.5)
+      tl.to('#cursor', { x: dock.x + 60, y: dock.y + 60, duration: 0.4, ease: 'back.out(1.6)' }, 9.5)
+
+      // drag: one curved path shared by the lens, its x-ray, the readout and the cursor
+      const bez = (t) => {
+        const C = [430, 250]
+        const u = 1 - t
+        return [u * u * DOCK[0] + 2 * u * t * C[0] + t * t * TARGET[0], u * u * DOCK[1] + 2 * u * t * C[1] + t * t * TARGET[1]]
+      }
+      const lensKeys = { easeEach: 'none' }
+      const curKeys = { easeEach: 'none' }
+      for (let i = 0; i <= 8; i++) {
+        const [x, y] = bez(i / 8)
+        const s = at(P.L1, x, y)
+        lensKeys[`${(i / 8) * 100}%`] = { '--cx': x, '--cy': y }
+        curKeys[`${(i / 8) * 100}%`] = { x: s.x + 60, y: s.y + 60 }
+      }
+      tl.to('#rig', { keyframes: lensKeys, ease: 'power2.inOut', duration: 1.78 }, 9.92)
+      tl.to('#cursor', { keyframes: curKeys, ease: 'power2.inOut', duration: 1.78 }, 9.92)
+      tl.fromTo('#ro-card', { opacity: 0, scale: 0.92, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: 'expo.out' }, 11.32)
+
+      // let go (beat-locked: 12.65): the bay opens, the lens flies home
+      tl.to('#cur-in', { scale: 1, duration: 0.24, ease: 'back.out(3)' }, 12.64)
+      ripple('#r5', { x: at(P.L1, ...TARGET).x, y: at(P.L1, ...TARGET).y }, 12.65)
+      tl.to('#ro-card', { opacity: 0, y: -6, duration: 0.16, ease: 'power2.in' }, 12.65)
+      tl.to('#m-sel-nolens', { opacity: 1, duration: 0.14, ease: 'none' }, 12.66)
+      tl.to('#rig', { '--cx': DOCK[0], '--cy': DOCK[1], duration: 0.5, ease: 'power3.inOut' }, 12.66)
+      tl.to('#lens-body', { scale: 0.6, duration: 0.5, ease: 'power3.inOut' }, 12.66)
+      tl.set('#m-sel', { opacity: 1 }, 13.16)
+      tl.set('#rig', { opacity: 0 }, 13.16)
+
+      /* ================= 5 · book it (12.90 – 18.96) ================= */
+      tl.to('#lot-cam', { ...cam(P.P1), duration: 0.6, ease: 'expo.inOut' }, 12.98)
+      const chip = at(P.P1, ...CHIP3H)
+      tl.to('#cursor', { x: chip.x, y: chip.y, duration: 0.77, ease: 'power3.inOut' }, 12.85)
+      press(13.7) // beat: 13.70
+      ripple('#r6', chip, 13.7)
+      tl.to('#p-stay', { opacity: 1, duration: 0.15, ease: 'none' }, 13.71)
+
+      const field = at(P.P1, ...FIELD)
+      tl.to('#cursor', { x: field.x, y: field.y, duration: 0.29, ease: 'power2.inOut' }, 13.86)
+      press(14.22) // beat: 14.22
+      ripple('#r7', field, 14.22)
+      tl.to('#p-focus', { opacity: 1, duration: 0.1, ease: 'none' }, 14.23)
+      tl.to('#cursor', { x: 1010, y: 620, duration: 0.5, ease: 'sine.inOut' }, 14.32)
+
+      // type the plate, one key at a time
+      tl.set('#typing', { opacity: 1 }, 14.4)
+      tl.set('#caret', { x: 0 }, 0)
+      for (let i = 0; i < 12; i++) {
+        const t = 14.45 + i * 0.105
+        tl.set('#ch' + i, { opacity: 1 }, t)
+        tl.set('#caret', { x: (i + 1) * 9.9 }, t)
+      }
+      tl.to('#p-typed', { opacity: 1, duration: 0.12, ease: 'none' }, 15.8)
+      tl.to('#typing', { opacity: 0, duration: 0.06, ease: 'none' }, 15.86)
+
+      const hold = at(P.P1, ...HOLD)
+      tl.to('#cursor', { x: hold.x, y: hold.y, duration: 0.32, ease: 'power3.inOut' }, 15.95)
+      press(16.34) // beat: 16.34
+      ripple('#r8', hold, 16.34)
+      tl.to('#p-holding', { opacity: 1, duration: 0.1, ease: 'none' }, 16.36)
+      tl.set('#holdbar', { opacity: 1 }, 16.36)
+      tl.fromTo('#hb-fill', { scaleX: 0 }, { scaleX: 1, duration: 1.05, ease: 'power1.inOut' }, 16.4)
+      tl.to('#cursor', { x: 1720, y: 1240, duration: 0.8, ease: 'power2.in' }, 16.7)
+      tl.to('#cursor', { opacity: 0, duration: 0.2, ease: 'none' }, 17.3)
+
+      // the bay pass flips in (beat-locked: 17.91)
+      tl.to('#lot-cam', { ...cam(P.T1), duration: 0.52, ease: 'power3.inOut' }, 17.3)
+      tl.to('#t-nocard', { opacity: 1, duration: 0.13, ease: 'none' }, 17.55)
+      tl.set('#holdbar', { opacity: 0 }, 17.7)
+      tl.fromTo(
+        '#t-card',
+        { opacity: 0, rotationX: -82, y: -14, transformPerspective: 1000, transformOrigin: '50% 0%' },
+        { opacity: 1, rotationX: 0, y: 0, duration: 0.62, ease: 'back.out(1.3)' },
+        17.55,
+      )
+
+      /* ================= 6 · every bay, both themes (18.96 – 21.62) ================= */
+      tl.set(['#lcam-light', '#lcam-dark'], { y: -160 }, 0)
+      tl.to(['#lcam-light', '#lcam-dark'], { y: -760, duration: 2.74, ease: 'power2.inOut' }, 18.96)
+      tl.set('#list-inner', { '--s': 106 }, 0)
+      tl.to('#list-inner', { '--s': 50, duration: 0.85, ease: 'expo.inOut' }, 19.1)
+      tl.fromTo('.tag-light', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 19.85)
+      tl.fromTo('.tag-dark', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 20.02)
+      tl.to('#list-inner', { scale: 0.93, opacity: 0, filter: 'blur(6px)', duration: 0.42, ease: 'power2.in' }, 21.62)
+
+      /* ================= 7 · arrivo. (21.62 – 24.60) ================= */
+      tl.to('#o-inner', { opacity: 1, duration: 0.38, ease: 'power1.inOut' }, 21.62)
+      tl.fromTo('.lt', { yPercent: 112 }, { yPercent: 0, duration: 0.6, ease: 'expo.out', stagger: 0.05 }, 22.08)
+      tl.fromTo('#o-dot', { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none' }, 22.43)
+      tl.fromTo('#o-dot', { y: -300, scale: 0.75 }, { y: 0, scale: 1, duration: 0.6, ease: 'bounce.out' }, 22.43) // first touch-down on the 22.65 beat
+      words('.o-tag .w', 22.78, 0.045, 0.7)
+      tl.fromTo('.o-loc', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 23.15)
+      tl.fromTo('#o-stack', { scale: 1 }, { scale: 1.03, duration: 2.0, ease: 'sine.out' }, 22.6)
+
+      // the yellow glow breathes with the bass (audio-reactive, one keyframe per frame)
+      tl.to(
+        '#o-glow',
+        { keyframes: BASS.map((b) => ({ scale: 1 + 0.12 * b, opacity: 0.4 + 0.45 * b, duration: 1 / 30, ease: 'none' })) },
+        21.7,
+      )
+
+      window.__timelines['arrivo-brag'] = tl
+    </script>
+  </body>
+</html>

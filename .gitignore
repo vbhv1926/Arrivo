@@ -1,0 +1,16 @@
+# dependencies and local stuff
+node_modules/
+__pycache__/
+*.log
+.DS_Store
+Thumbs.db
+
+# the bookings database (made fresh on first run)
+backend/data/
+
+# local tooling, not part of the project
+.claude/
+.tunnel/
+presentation-build/
+brag-output/composition/.hyperframes/
+brag-output/composition/.thumbnails/

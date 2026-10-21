@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f4f1" />
+    <meta
+      name="description"
+      content="Arrivo lets you book a parking bay before you leave, the way you pick a seat for a film. Live bay-by-bay plan of the KIET main lot."
+    />
+    <title>Arrivo · Book a parking bay like a seat</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // pick the theme before the page shows, so it doesn't flash
+      try {
+        var saved = localStorage.getItem('arrivo.theme')
+        if (saved !== 'dark' && saved !== 'light') {
+          saved = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        document.documentElement.dataset.theme = saved
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-DNa1hSL2.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-YgbaoJrU.css">
+  </head>
+  <body>
+    <!-- nav -->
+    <header class="nav">
+      <div class="wrap nav-in">
+        <a href="#top" class="nav-logo" data-go="#top" data-offset="0">
+          <span class="logo">arrivo<span class="logo-dot"></span></span>
+          <span class="row-bars" aria-hidden="true" title="Free share per row">
+            <i></i><i></i><i></i><i></i><i></i>
+          </span>
+        </a>
+
+        <nav class="nav-links">
+          <button class="nav-look" data-go="#lot-map" data-offset="-96">
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <circle cx="6.6" cy="6.6" r="4.4" fill="none" stroke="currentColor" stroke-width="1.6" />
+              <path d="m10 10 3.6 3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Look closer
+          </button>
+          <button class="nav-free" data-go="#live">
+            <span class="live-dot"></span>
+            <span data-lot="free"></span> free now
+          </button>
+          <button class="nav-book" data-go="#live">Book a bay</button>
+        </nav>
+
+        <button class="theme-btn" role="switch" aria-checked="false" aria-label="Switch to dark theme" title="Dark">
+          <span class="theme-track">
+            <span class="theme-knob">
+              <svg class="i-sun" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+                  <circle cx="8" cy="8" r="3" fill="currentColor" stroke="none" />
+                  <path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M13 3l-1.1 1.1M4.1 11.9 3 13" />
+                </g>
+              </svg>
+              <svg class="i-moon" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                <path d="M13 9.5A5.2 5.2 0 0 1 6.5 3a.6.6 0 0 0-.82-.72A6 6 0 1 0 13.7 10.3a.6.6 0 0 0-.7-.8Z" fill="currentColor" />
+              </svg>
+            </span>
+          </span>
+        </button>
+
+        <button class="menu-btn" aria-label="Open menu" aria-expanded="false">
+          <i></i>
+          <i></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- full screen menu -->
+    <div class="menu">
+      <div class="wrap menu-in">
+        <span class="mono">Chapters</span>
+        <ul>
+          <li style="--i: 0">
+            <button data-to="#how">
+              <span class="num">01</span>
+              <span class="menu-l">How it works</span>
+              <span class="mono menu-s">Five steps from lot to parked</span>
+            </button>
+          </li>
+          <li style="--i: 1">
+            <button data-to="#live">
+              <span class="num">02</span>
+              <span class="menu-l">Live lot</span>
+              <span class="mono menu-s">The KIET plan, bay by bay</span>
+            </button>
+          </li>
+          <li style="--i: 2">
+            <button data-to="#all-bays">
+              <span class="num">03</span>
+              <span class="menu-l">All bays</span>
+              <span class="mono menu-s">Every bay in one list</span>
+            </button>
+          </li>
+          <li style="--i: 3">
+            <button data-to="#who">
+              <span class="num">04</span>
+              <span class="menu-l">Who it is for</span>
+              <span class="mono menu-s">Drivers, campuses, forecasts</span>
+            </button>
+          </li>
+          <li style="--i: 4">
+            <button data-to="#turn">
+              <span class="num">05</span>
+              <span class="menu-l">Book a bay</span>
+              <span class="mono menu-s">It takes about a minute</span>
+            </button>
+          </li>
+        </ul>
+        <div class="menu-foot">
+          <span class="mono">
+            <span class="live-dot"></span><span data-lot="free"></span> of <span data-lot="total"></span> bays free at KIET right now
+          </span>
+          <span class="mono">team@arrivo.app</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- dot on the right edge that follows the scroll -->
+    <div class="ruler-r" aria-hidden="true">
+      <span class="ruler-ticks"></span>
+      <span class="ruler-dot"><span class="ruler-label mono-s"></span></span>
+    </div>
+
+    <main>
+      <!-- hero -->
+      <section class="hero" id="top" data-chapter="Start">
+        <div class="ruler-l" aria-hidden="true"></div>
+        <div class="wrap hero-wrap">
+          <div class="hero-top">
+            <div class="reveal" style="--d: 0.6s; --y: 30px">
+              <div id="seatmap-root"></div>
+            </div>
+            <div class="hero-copy">
+              <p class="lede reveal" style="--d: 0.45s">
+                Book a parking bay before you leave, the way you would pick a seat for a film. Choose the bay, choose
+                the hours, and drive straight to it.
+              </p>
+              <div class="hero-cta reveal" style="--d: 0.6s">
+                <button class="btn btn-dark" data-go="#live">
+                  <span>Book a bay</span>
+                  <span class="btn-ico">
+                    <span class="a1"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                    <span class="a2"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                  </span>
+                </button>
+                <button class="btn btn-line" data-go="#how" data-offset="0">
+                  <span>How it works</span>
+                  <span class="btn-ico">
+                    <span class="a1"><svg viewBox="0 0 16 16" fill="none" style="transform: rotate(135deg)" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                    <span class="a2"><svg viewBox="0 0 16 16" fill="none" style="transform: rotate(135deg)" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <h1 class="display hero-title split" data-delay="0.15" data-stagger="0.08">Park like you<br />booked a seat.</h1>
+
+          <div class="hero-foot reveal" style="--d: 1s">
+            <span class="mono">KIET, Ghaziabad · first lot mapped</span>
+            <span class="mono">96 bays · 5 rows · ₹15–35 an hour</span>
+            <button class="mono hero-scroll" data-go="#how" data-offset="0">
+              Scroll to look closer
+              <span class="hero-scroll-line"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- how it works (react) -->
+      <div id="how-root"></div>
+
+      <!-- live lot -->
+      <section class="sec live" id="live" data-chapter="Live lot">
+        <div class="wrap">
+          <div class="sec-rule"></div>
+          <div class="sec-head">
+            <div>
+              <div class="sec-kicker reveal">
+                <span class="num">02</span>
+                <span class="bar"></span>
+                <span class="mono">Live lot</span>
+              </div>
+              <h2 class="h2 split">KIET main lot,<br />right now.</h2>
+            </div>
+            <div class="live-stats reveal" style="--d: 0.2s">
+              <div>
+                <span class="mono">Free</span>
+                <span class="big-num" data-lot="free" data-pad="3">000</span>
+              </div>
+              <div>
+                <span class="mono">Booked</span>
+                <span class="big-num" data-lot="booked" data-pad="3">000</span>
+              </div>
+              <div>
+                <span class="mono">Reserved</span>
+                <span class="big-num" data-lot="reserved" data-pad="3">000</span>
+              </div>
+            </div>
+          </div>
+          <p class="lede sec-intro reveal" style="--d: 0.1s">
+            This is the lot beside the KIET football ground, drawn from the satellite view, one bay at a time. Every bay
+            you see is bookable. Tap one to see who has it and until when, or pick up the lens and sweep it across the
+            plan.
+          </p>
+
+          <!-- map, bay panel and the list of all bays (react) -->
+          <div id="live-root"></div>
+        </div>
+      </section>
+
+      <!-- principles -->
+      <section class="sec rules" data-chapter="Principles">
+        <div class="wrap">
+          <div class="sec-rule"></div>
+          <div class="sec-head">
+            <div>
+              <div class="sec-kicker reveal">
+                <span class="num">03</span>
+                <span class="bar"></span>
+                <span class="mono">What it promises</span>
+              </div>
+              <h2 class="h2 split">Booked means<br />booked.</h2>
+            </div>
+            <div class="rules-aside reveal" style="--d: 0.2s">
+              <span class="hand">even at 9:58 on a monday.</span>
+            </div>
+          </div>
+          <div class="rules-grid">
+            <div class="rule-item reveal" style="--d: 0s">
+              <span class="rule-line"></span>
+              <span class="num rule-n">01</span>
+              <h3 class="rule-t">No circling.</h3>
+              <p class="body">You know the bay before you leave home. The drive ends at A-14, not on the third lap of the lot.</p>
+            </div>
+            <div class="rule-item reveal" style="--d: 0.08s">
+              <span class="rule-line"></span>
+              <span class="num rule-n">02</span>
+              <h3 class="rule-t">One bay, one booking.</h3>
+              <p class="body">A bay cannot be sold twice for the same minute. Nobody argues at the gate, because there is nothing to argue about.</p>
+            </div>
+            <div class="rule-item reveal" style="--d: 0.16s">
+              <span class="rule-line"></span>
+              <span class="num rule-n">03</span>
+              <h3 class="rule-t">Live, not guessed.</h3>
+              <p class="body">Every bay is free, booked, reserved or about to free up, and the plan shows it as it changes.</p>
+            </div>
+            <div class="rule-item reveal" style="--d: 0.24s">
+              <span class="rule-line"></span>
+              <span class="num rule-n">04</span>
+              <h3 class="rule-t">A grace window.</h3>
+              <p class="body">Running late? A reserved bay waits 15 minutes past your arrival time before it opens up for someone else.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- who it is for -->
+      <section class="sec who" id="who" data-chapter="Who it is for">
+        <div class="wrap">
+          <div class="sec-rule"></div>
+          <div class="sec-head">
+            <div>
+              <div class="sec-kicker reveal">
+                <span class="num">04</span>
+                <span class="bar"></span>
+                <span class="mono">Who it is for</span>
+              </div>
+              <h2 class="h2 split">Both sides<br />of the barrier.</h2>
+            </div>
+          </div>
+          <p class="lede sec-intro reveal" style="--d: 0.1s">
+            Drivers get a bay that actually exists when they arrive. The people who run the lot get bookings in advance
+            and a clear picture of how every row is used.
+          </p>
+
+          <div class="cards">
+            <!-- drivers -->
+            <div class="card is-on" style="--d: 0s">
+              <span class="card-n mono-s">01</span>
+              <span class="card-k">Drivers</span>
+              <div class="card-body">
+                <div class="card-art">
+                  <svg viewBox="0 0 360 220" class="art" aria-hidden="true">
+                    <rect x="128" y="18" width="104" height="196" rx="18" class="a-line" />
+                    <rect x="160" y="28" width="40" height="6" rx="3" class="a-fill" />
+                    <rect x="142" y="52" width="76" height="92" rx="8" class="a-sun" />
+                    <text x="180" y="96" text-anchor="middle" class="a-big">A-14</text>
+                    <text x="180" y="114" text-anchor="middle" class="a-mono">14:00 → 16:00</text>
+                    <line x1="142" y1="156" x2="218" y2="156" class="a-dash" />
+                    <rect x="146" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="150" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="154" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="158" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="162" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="166" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="170" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="174" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="178" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="182" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="186" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="190" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="194" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="198" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="202" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="206" y="166" width="2.5" height="20" class="a-ink" />
+                    <rect x="210" y="166" width="1.5" height="20" class="a-ink" />
+                    <rect x="214" y="166" width="1.5" height="20" class="a-ink" />
+                    <path d="M262 70c20 6 36 22 40 44" class="a-hand" />
+                    <text x="248" y="62" class="a-handt">bay pass</text>
+                  </svg>
+                </div>
+                <div class="card-txt">
+                  <span class="mono">Drivers</span>
+                  <h3 class="h3">A bay that is there when you arrive.</h3>
+                  <p class="body">Pick the bay and the hours, pay, drive in. Extend from your phone if the lecture runs long.</p>
+                  <div class="card-foot">
+                    <span class="mono">from ₹15 an hour</span>
+                    <button class="link-u" data-go="#live">
+                      See the live lot
+                      <span class="arr"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- campuses -->
+            <div class="card" style="--d: 0.07s">
+              <span class="card-n mono-s">02</span>
+              <span class="card-k">Campuses</span>
+              <div class="card-body">
+                <div class="card-art">
+                  <svg viewBox="0 0 360 220" class="art" aria-hidden="true">
+                    <rect x="40" y="26" width="280" height="168" rx="10" class="a-line" />
+                    <line x1="40" y1="110" x2="320" y2="110" class="a-dash" />
+                    <rect x="56" y="40" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="82" y="40" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="108" y="40" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="134" y="40" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="160" y="40" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="186" y="40" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="212" y="40" width="22" height="58" rx="3" class="a-sun" />
+                    <rect x="238" y="40" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="264" y="40" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="290" y="40" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="56" y="122" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="82" y="122" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="108" y="122" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="134" y="122" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="160" y="122" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="186" y="122" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="212" y="122" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="238" y="122" width="22" height="58" rx="3" class="a-grey" />
+                    <rect x="264" y="122" width="22" height="58" rx="3" class="a-line" />
+                    <rect x="290" y="122" width="22" height="58" rx="3" class="a-grey" />
+                    <text x="40" y="214" class="a-mono">96 bays · drawn once, used every day</text>
+                  </svg>
+                </div>
+                <div class="card-txt">
+                  <span class="mono">Campuses</span>
+                  <h3 class="h3">Fill the lot you already have.</h3>
+                  <p class="body">We map the lot once, bay by bay. Staff, students and visitors book; you decide who gets which rows.</p>
+                  <div class="card-foot">
+                    <span class="mono">8% per booking</span>
+                    <button class="link-u" data-go="#live">
+                      See the live lot
+                      <span class="arr"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- forecasts -->
+            <div class="card" style="--d: 0.14s">
+              <span class="card-n mono-s">03</span>
+              <span class="card-k">Forecasts</span>
+              <div class="card-body">
+                <div class="card-art">
+                  <svg viewBox="0 0 360 220" class="art" aria-hidden="true">
+                    <line x1="30" y1="180" x2="330" y2="180" class="a-line" />
+                    <path d="M190 120 C 220 70, 250 60, 280 90 S 320 140, 330 130 L330 160 C 310 170, 290 150, 280 128 S 230 100, 190 140Z" class="a-band" />
+                    <path d="M30 160 C 60 150, 80 90, 110 80 S 160 130, 190 130" class="a-stroke" />
+                    <path d="M190 130 C 220 85, 250 75, 280 108 S 320 150, 330 145" class="a-stroke-d" />
+                    <line x1="190" y1="40" x2="190" y2="180" class="a-dash" />
+                    <text x="196" y="50" class="a-mono">today</text>
+                    <text x="30" y="30" class="a-mono">Expected demand, next 7 days</text>
+                  </svg>
+                </div>
+                <div class="card-txt">
+                  <span class="mono">Forecasts</span>
+                  <h3 class="h3">Know Monday's rush on Sunday.</h3>
+                  <p class="body">Demand prediction from booking history, timetables and events, so prices and plans can move before the queue does.</p>
+                  <div class="card-foot">
+                    <span class="mono">next on the roadmap</span>
+                    <button class="link-u" data-go="#live">
+                      See the live lot
+                      <span class="arr"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- your turn -->
+      <section class="turn" id="turn" data-chapter="Your turn">
+        <div class="turn-grid" aria-hidden="true">
+          <i class="g-h g1"></i>
+          <i class="g-h g2"></i>
+          <i class="g-v g3"></i>
+          <i class="g-v g4"></i>
+        </div>
+        <div class="turn-center">
+          <div class="turn-box reveal" style="--d: 0.4s">
+            <span class="tb-h tb-1"></span>
+            <span class="tb-h tb-2"></span>
+            <span class="tb-h tb-3"></span>
+            <span class="tb-h tb-4"></span>
+            <button class="btn btn-dark" data-go="#live">
+              <span>Book a bay</span>
+              <span class="btn-ico">
+                <span class="a1"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                <span class="a2"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+              </span>
+            </button>
+            <span class="tb-label mono-s">Button · 196 × 58</span>
+          </div>
+          <div class="hand-note note turn-note" style="--d: 0.9s">
+            <svg width="64" height="58" viewBox="0 0 64 58" fill="none" aria-hidden="true">
+              <path pathLength="1" d="M60 8C46 8 22 18 8 50" />
+              <path pathLength="1" d="M6 39l2 11 10-4" />
+            </svg>
+            <span class="hand">go on, tap it.</span>
+          </div>
+        </div>
+        <div class="wrap turn-text">
+          <div class="how-count mono">
+            <span class="num">05</span>
+            <span class="how-count-bar"><i style="transform: scaleX(1)"></i></span>
+            <span>05</span>
+          </div>
+          <h3 class="h3 turn-h split">Your turn.</h3>
+          <p class="lede reveal" style="--d: 0.2s">
+            Everything above comes down to this one button. Press it and pick your bay.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer -->
+    <footer class="foot" data-chapter="End">
+      <div class="wrap">
+        <div class="sec-rule"></div>
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <div class="reveal">
+              <span class="logo logo-big">arrivo<span class="logo-dot"></span></span>
+            </div>
+            <p class="lede reveal" style="--d: 0.1s">
+              Parking reservations for campuses and city lots. First lot mapped: KIET, Ghaziabad. Built at a hackathon,
+              meant to outlive it.
+            </p>
+            <p class="mono foot-def reveal" style="--d: 0.2s">
+              arrivo. italian for “arrival” — you arrive, the bay is already yours.
+            </p>
+          </div>
+          <div class="foot-col">
+            <span class="mono-s caps">Chapters</span>
+            <button data-go="#how">How it works</button>
+            <button data-go="#live">Live lot</button>
+            <button data-go="#all-bays">All bays</button>
+            <button data-go="#who">Who it is for</button>
+          </div>
+          <div class="foot-col">
+            <span class="mono-s caps">Contact</span>
+            <a href="mailto:team@arrivo.app">team@arrivo.app</a>
+            <span>Operators: partners@arrivo.app</span>
+            <span class="foot-live"><span class="live-dot"></span> <span data-lot="free"></span> bays free right now</span>
+          </div>
+        </div>
+        <div class="foot-bar">
+          <span class="mono-s">© 2026 Arrivo</span>
+          <span class="mono-s">Lot plan traced from Google Earth imagery © Google</span>
+          <button class="mono-s" data-go="#top" data-offset="0">Back to the top ↑</button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- react draws into #seatmap-root, #how-root and #live-root from here -->
+    <div id="react-root"></div>
+
+  </body>
+</html>
